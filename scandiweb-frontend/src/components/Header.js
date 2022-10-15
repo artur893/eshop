@@ -14,11 +14,13 @@ class Menu extends Component {
         super()
 
         this.state = {}
+        this.pickCategory = this.pickCategory.bind(this)
     }
 
     categoryDataRaw
     categoryDataArr
-    filteredData
+    filteredDataCategory
+    dataToDisplay
 
     async getCategoriesData() {
         const categoryQuery = new Query('category{products{category}}')
@@ -35,7 +37,9 @@ class Menu extends Component {
         return data.filter((value, index) => data.indexOf(value) === index)
     }
 
-    // <li key={x.category} className={'menu-element'}>{x.category}</li>
+    displayCategories() {
+        this.dataToDisplay = this.filteredDataCategory.map((x) => <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>)
+    }
 
     formatCategoryData() {
         this.categoryDataArr = Object.values(this.categoryDataRaw).map((x) => x.category)
@@ -45,23 +49,24 @@ class Menu extends Component {
         const menuElements = document.querySelectorAll('li')
         menuElements.forEach((element) => element.classList.remove('active'))
         e.target.classList.add('active')
+        this.props.changeCategory(e.target.textContent)
     }
 
     componentDidMount() {
         this.getCategoriesData()
+
     }
 
     componentDidUpdate() {
         this.formatCategoryData()
-        this.filteredData = this.filterDuplicates(this.categoryDataArr)
-        console.log(this.filteredData)
+        this.filteredDataCategory = this.filterDuplicates(this.categoryDataArr)
+        this.displayCategories()
     }
 
     render() {
         return (
             <ul className='menu'>
-                <li className='menu-element' onClick={this.pickCategory}>CLOTHES</li>
-                <li className='menu-element' onClick={this.pickCategory}>TECH</li>
+                {this.dataToDisplay}
             </ul>
         )
     }
@@ -168,7 +173,7 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <Menu />
+                <Menu changeCategory={this.props.changeCategory}/>
                 <Logo />
                 <div className='rightside-header'>
                     <Currency currencies={this.state} />
