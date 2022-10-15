@@ -1,0 +1,90 @@
+:root {
+    --dark: #1D1F22;
+    --green: #5ECE7B;
+    color: var(--dark);
+    font-family: 'Raleway';
+}
+
+.menu>li.active {
+    color: var(--green);
+    border-bottom: solid var(--green) 2px;
+}
+
+header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px
+}
+
+.menu>li {
+    font-weight: 600;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+}
+
+.rightside-header {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
+
+.rightside-header>img {
+    height: 20px;
+}
+
+.currency-field {
+    cursor: default;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.drop-currency-field {
+    cursor: default;
+    padding-left: 7px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.drop-currency-field:hover {
+    background-color: #EEEEEE;
+}
+
+.currency-field>img {
+    height: 10px;
+}
+
+.dropdown-menu {
+    opacity: 0;
+    width: 80px;
+    position: absolute;
+    top: 60px;
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+}
+
+.dropdown-menu>li {
+    font-size: 18px;
+    font-weight: 500;
+    height: 40px;
+}
