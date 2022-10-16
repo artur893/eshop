@@ -10,8 +10,8 @@ const endpointUrl = 'http://localhost:4000/'
 client.setEndpoint(endpointUrl)
 
 class Menu extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {}
         this.pickCategory = this.pickCategory.bind(this)
@@ -52,12 +52,8 @@ class Menu extends Component {
         this.props.changeCategory(e.target.textContent)
     }
 
-    componentDidMount() {
-        this.getCategoriesData()
-
-    }
-
-    componentDidUpdate() {
+    async componentDidMount() {
+        await this.getCategoriesData()
         this.formatCategoryData()
         this.filteredDataCategory = this.filterDuplicates(this.categoryDataArr)
         this.displayCategories()
@@ -80,8 +76,8 @@ class Logo extends Component {
 }
 
 class Currency extends Component {
-    constructor(currencies) {
-        super(currencies)
+    constructor(props) {
+        super(props)
 
         this.state = { isDropped: false }
 
@@ -113,8 +109,8 @@ class Currency extends Component {
 }
 
 class DropdownMenu extends Component {
-    constructor(currencies) {
-        super(currencies)
+    constructor(props) {
+        super(props)
 
         this.createCurrenciesToDisplay = this.createCurrenciesToDisplay.bind(this)
     }
@@ -126,6 +122,10 @@ class DropdownMenu extends Component {
     }
 
     componentDidUpdate() {
+        this.createCurrenciesToDisplay()
+    }
+
+    componentDidMount() {
         this.createCurrenciesToDisplay()
     }
 
@@ -146,8 +146,8 @@ class Cart extends Component {
 }
 
 class Header extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             0: {
                 symbol: 'USD',
@@ -160,20 +160,21 @@ class Header extends Component {
         const currencyQuery = new Query('currencies{label, symbol}')
         try {
             const currencyData = await client.post(currencyQuery)
-            this.setState(currencyData.currencies)
+            this.setState(await currencyData.currencies)
         } catch (error) {
             console.log(`Unable to get data from server: ${error}`)
         }
     }
 
-    componentDidMount() {
-        this.getCurrencyData()
+    async componentDidMount() {
+        await this.getCurrencyData()
     }
 
     render() {
+        this.getCurrencyData()
         return (
             <header>
-                <Menu changeCategory={this.props.changeCategory}/>
+                <Menu changeCategory={this.props.changeCategory} />
                 <Logo />
                 <div className='rightside-header'>
                     <Currency currencies={this.state} />
