@@ -27,7 +27,6 @@ class Menu extends Component {
         try {
             const categoryData = await client.post(categoryQuery)
             this.categoryDataRaw = categoryData.category.products
-            console.log(this.categoryDataRaw)
         } catch (error) {
             console.log(`Unable to get data from server: ${error}`)
         }
@@ -37,8 +36,8 @@ class Menu extends Component {
         return data.filter((value, index) => data.indexOf(value) === index)
     }
 
-    displayCategories() {
-        this.dataToDisplay = this.filteredDataCategory.map((x) => <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>)
+    async displayCategories() {
+        this.dataToDisplay = await this.filteredDataCategory.map((x) => <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>)
     }
 
     formatCategoryData() {
@@ -46,7 +45,7 @@ class Menu extends Component {
     }
 
     pickCategory(e) {
-        const menuElements = document.querySelectorAll('li')
+        const menuElements = document.querySelectorAll('.menu-element')
         menuElements.forEach((element) => element.classList.remove('active'))
         e.target.classList.add('active')
         this.props.changeCategory(e.target.textContent)
@@ -55,8 +54,8 @@ class Menu extends Component {
     async componentDidMount() {
         await this.getCategoriesData()
         this.formatCategoryData()
-        this.filteredDataCategory = this.filterDuplicates(this.categoryDataArr)
-        this.displayCategories()
+        this.filteredDataCategory = await this.filterDuplicates(this.categoryDataArr)
+        await this.displayCategories()
     }
 
     render() {
@@ -97,6 +96,7 @@ class Currency extends Component {
             return arrowUpImg
         }
     }
+
 
     render() {
         return (

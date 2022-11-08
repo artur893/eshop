@@ -1,5 +1,5 @@
 import { Header } from './components/Header'
-import { Category } from './components/Products'
+import { Category, Products } from './components/Products'
 import { Component } from 'react';
 import './App.css';
 import { client, Query } from '@tilework/opus'
@@ -11,7 +11,10 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { pickedCategory: null }
+    this.state = {
+      pickedCategory: '',
+      pickedCurrency: '$'
+    }
     this.changeState = this.changeState.bind(this)
   }
 
@@ -23,7 +26,6 @@ class App extends Component {
     try {
       const productsData = await client.post(productsQuery)
       this.productsDataRaw = productsData
-      console.log(this.productsDataRaw)
     } catch (error) {
       console.log(`Unable to get data from server: ${error}`)
     }
@@ -58,6 +60,7 @@ class App extends Component {
       <div className='container'>
         <Header pickedCategory={this.state.pickedCategory} changeCategory={this.changeState} />
         <Category pickedCategory={this.state.pickedCategory} />
+        <Products pickedCategory={this.state.pickedCategory} />
       </div>
     )
   }
