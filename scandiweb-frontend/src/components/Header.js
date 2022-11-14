@@ -37,7 +37,9 @@ class Menu extends Component {
     }
 
     async displayCategories() {
-        this.dataToDisplay = await this.filteredDataCategory.map((x) => <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>)
+        this.dataToDisplay = await this.filteredDataCategory.map((x) => {
+            return <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>
+        })
     }
 
     formatCategoryData() {
@@ -78,15 +80,20 @@ class Currency extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { isDropped: false }
+        this.state = {
+            isDropped: false,
+        }
 
         this.dropMenu = this.dropMenu.bind(this)
     }
+
+    pickedCurrency = '$'
 
     dropMenu() {
         const dropdownMenuElement = document.querySelector('.dropdown-menu')
         dropdownMenuElement.classList.toggle('active')
         this.state.isDropped === false ? this.setState({ isDropped: true }) : this.setState({ isDropped: false })
+        this.pickCurrency()
     }
 
     changeDropArrow() {
@@ -97,11 +104,10 @@ class Currency extends Component {
         }
     }
 
-
     render() {
         return (
             <div className='currency-field'>
-                <div onClick={this.dropMenu}>{this.props.currencies[0].symbol}</div>
+                <div onClick={this.dropMenu}>{this.pickedCurrency}</div>
                 <img src={this.changeDropArrow()} alt='dropdown button' onClick={this.dropMenu}></img>
             </div>
         )
@@ -118,7 +124,8 @@ class DropdownMenu extends Component {
     currenciesToDisplay = []
 
     createCurrenciesToDisplay() {
-        this.currenciesToDisplay = Object.values(this.props.currencies).map((x) => <li key={x.label} className={'drop-currency-field'}>{x.symbol} {x.label}</li>)
+        this.currenciesToDisplay = Object.values(this.props.currencies).map((x) => {
+        return <li key={x.label} className={'drop-currency-field'}>{x.symbol} {x.label}</li>})
     }
 
     componentDidUpdate() {
