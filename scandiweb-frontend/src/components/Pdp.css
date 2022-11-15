@@ -1,5 +1,6 @@
 .pdp-container {
     margin: 100px 0;
+    display: flex;
 }
 
 .small-photo {
@@ -14,4 +15,8 @@
 
 .small-photo:hover {
     transform: scale(1.1);
+}
+
+.main-image {
+    height: 500px;
 }
