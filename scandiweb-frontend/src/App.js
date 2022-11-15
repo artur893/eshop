@@ -2,7 +2,7 @@ import { Header } from './components/Header'
 import { Category, Products } from './components/Products'
 import { Component } from 'react';
 import './App.css';
-import { client } from '@tilework/opus'
+import { client, Query } from '@tilework/opus'
 
 const endpointUrl = 'http://localhost:4000/'
 client.setEndpoint(endpointUrl)
@@ -16,11 +16,26 @@ class App extends Component {
       pickedCurrency: '$',
       pickedProduct: null,
       isDetailCardActive: false,
+      productsData: null
     }
     this.changeState = this.changeState.bind(this)
     this.changeCurrency = this.changeCurrency.bind(this)
     this.changeProduct = this.changeProduct.bind(this)
     this.setIsDetailCardActiveToTrue = this.setIsDetailCardActiveToTrue.bind(this)
+  }
+
+  componentDidMount() {
+    this.getProductsData()
+  }
+
+  async getProductsData() {
+    const productsQuery = new Query('category{products{id, name, inStock, gallery, description, category, attributes{id,name,type,items{displayValue,value,id}}, prices{currency{label,symbol},amount}, brand}}')
+    try {
+      const productsData = await client.post(productsQuery)
+      this.setState({ productsData: await productsData.category.products })
+    } catch (error) {
+      console.log(`Unable to get data from server: ${error}`)
+    }
   }
 
   changeState(newCategory) {
@@ -49,7 +64,7 @@ class App extends Component {
   displayProductsList() {
     if (this.state.isDetailCardActive === false) {
       return <Products pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency}
-        changeProduct={this.changeProduct} hideProducts={this.setIsDetailCardActiveToTrue} />
+        productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setIsDetailCardActiveToTrue} />
     }
   }
 

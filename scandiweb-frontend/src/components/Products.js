@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import './Products.css';
-import { client, Query } from '@tilework/opus'
-
-const endpointUrl = 'http://localhost:4000/'
-client.setEndpoint(endpointUrl)
 
 class Category extends Component {
 
@@ -19,25 +15,17 @@ class Products extends Component {
     constructor(props) {
         super(props)
 
-        this.state = null
-    }
-
-    componentDidMount() {
-        this.getProductsData()
+        this.state = {
+            isLoadedData: false
+        }
     }
 
     componentDidUpdate() {
-        this.pickProductDetails()
-    }
-
-    async getProductsData() {
-        const productsQuery = new Query('category{products{id, name, inStock, gallery, description, category, attributes{id,name,type,items{displayValue,value,id}}, prices{currency{label,symbol},amount}, brand}}')
-        try {
-            const productsData = await client.post(productsQuery)
-            this.setState({ products: await productsData.category.products })
-        } catch (error) {
-            console.log(`Unable to get data from server: ${error}`)
+        if (!this.state.isLoadedData) {
+            this.setState({ products: this.props.productsData })
+            this.setState({ isLoadedData: true })
         }
+        this.pickProductDetails()
     }
 
     pickProductDetails() {
@@ -52,7 +40,7 @@ class Products extends Component {
     }
 
     populateCards(category) {
-        if (this.state !== null) {
+        if (this.state.products) {
             const productCards = this.state.products.map((product) => {
                 const indexOfCurrency = product.prices.findIndex((currency) => currency.currency.symbol === this.props.pickedCurrency)
                 if (product.category.toUpperCase() === category) {
