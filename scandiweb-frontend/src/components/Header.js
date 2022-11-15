@@ -36,8 +36,8 @@ class Menu extends Component {
         return data.filter((value, index) => data.indexOf(value) === index)
     }
 
-    async displayCategories() {
-        this.dataToDisplay = await this.filteredDataCategory.map((x) => {
+    displayCategories() {
+        this.dataToDisplay = this.filteredDataCategory.map((x) => {
             return <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>
         })
     }
@@ -56,8 +56,8 @@ class Menu extends Component {
     async componentDidMount() {
         await this.getCategoriesData()
         this.formatCategoryData()
-        this.filteredDataCategory = await this.filterDuplicates(this.categoryDataArr)
-        await this.displayCategories()
+        this.filteredDataCategory = this.filterDuplicates(this.categoryDataArr)
+        this.displayCategories()
     }
 
     render() {
@@ -171,14 +171,14 @@ class Header extends Component {
         const currencyQuery = new Query('currencies{label, symbol}')
         try {
             const currencyData = await client.post(currencyQuery)
-            this.setState(await currencyData.currencies)
+            this.setState(currencyData.currencies)
         } catch (error) {
             console.log(`Unable to get data from server: ${error}`)
         }
     }
 
-    async componentDidMount() {
-        await this.getCurrencyData()
+    componentDidMount() {
+        this.getCurrencyData()
     }
 
     componentDidUpdate(prevProps, prevState) {

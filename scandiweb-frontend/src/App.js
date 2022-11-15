@@ -1,5 +1,6 @@
 import { Header } from './components/Header'
 import { Category, Products } from './components/Products'
+import { Pdp } from './components/Pdp'
 import { Component } from 'react';
 import './App.css';
 import { client, Query } from '@tilework/opus'
@@ -32,7 +33,7 @@ class App extends Component {
     const productsQuery = new Query('category{products{id, name, inStock, gallery, description, category, attributes{id,name,type,items{displayValue,value,id}}, prices{currency{label,symbol},amount}, brand}}')
     try {
       const productsData = await client.post(productsQuery)
-      this.setState({ productsData: await productsData.category.products })
+      this.setState({ productsData: productsData.category.products })
     } catch (error) {
       console.log(`Unable to get data from server: ${error}`)
     }
@@ -68,6 +69,12 @@ class App extends Component {
     }
   }
 
+  displayPDP() {
+    if (this.state.isDetailCardActive === true) {
+      return <Pdp productsData={this.state.productsData} pickedProduct={this.state.pickedProduct}/>
+    }
+  }
+
   render() {
     return (
       <div className='container'>
@@ -75,6 +82,7 @@ class App extends Component {
           changeCategory={this.changeState} changeCurrency={this.changeCurrency} />
         {this.displayCategoryName()}
         {this.displayProductsList()}
+        {this.displayPDP()}
       </div>
     )
   }
