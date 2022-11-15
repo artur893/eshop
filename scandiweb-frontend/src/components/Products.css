@@ -68,7 +68,7 @@
     position: absolute;
     left: 320px;
     bottom: 52px;
-    transition: 500ms;
+    transition: 200ms;
 }
 
 .cart-circle-img {

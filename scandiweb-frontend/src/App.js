@@ -12,7 +12,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      pickedCategory: 'CLOTHES',
+      pickedCategory: '',
       pickedCurrency: '$'
     }
     this.changeState = this.changeState.bind(this)
