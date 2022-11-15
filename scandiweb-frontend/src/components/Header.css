@@ -20,7 +20,7 @@ header {
 .menu {
     width: 300px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 50px
 }
@@ -37,7 +37,7 @@ header {
 .rightside-header {
     width: 300px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     gap: 20px
 }

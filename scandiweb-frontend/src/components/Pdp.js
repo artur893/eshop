@@ -20,13 +20,21 @@ class Pdp extends Component {
         console.log(this.state)
     }
 
+    displayGalleryList() {
+        const gallery = this.state.gallery.map((photo) => <img className='small-photo' src={photo} alt={`${this.state.name}`}></img>)
+        return gallery
+    }
+
     render() {
-        return (
-            <div className='pdp-container'>
-                <div className="small-images"></div>
-                <div className='main-image'></div>
-                <div className='details'></div>
-            </div>)
+        if (this.state !== null) {
+            return (
+                <div className='pdp-container'>
+                    <div className="small-images">{this.displayGalleryList()}</div>
+                    <div className='main-image'></div>
+                    <div className='details'>{this.state.name}</div>
+                </div>)
+        }
+
     }
 }
 

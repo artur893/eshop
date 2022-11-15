@@ -1,0 +1,17 @@
+.pdp-container {
+    margin: 100px 0;
+}
+
+.small-photo {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+    transition: 200ms;
+}
+
+.small-photo:hover {
+    transform: scale(1.1);
+}
