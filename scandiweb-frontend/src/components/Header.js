@@ -87,13 +87,10 @@ class Currency extends Component {
         this.dropMenu = this.dropMenu.bind(this)
     }
 
-    pickedCurrency = '$'
-
     dropMenu() {
         const dropdownMenuElement = document.querySelector('.dropdown-menu')
         dropdownMenuElement.classList.toggle('active')
         this.state.isDropped === false ? this.setState({ isDropped: true }) : this.setState({ isDropped: false })
-        this.pickCurrency()
     }
 
     changeDropArrow() {
@@ -107,7 +104,7 @@ class Currency extends Component {
     render() {
         return (
             <div className='currency-field'>
-                <div onClick={this.dropMenu}>{this.pickedCurrency}</div>
+                <div onClick={this.dropMenu}>{this.props.pickedCurrency}</div>
                 <img src={this.changeDropArrow()} alt='dropdown button' onClick={this.dropMenu}></img>
             </div>
         )
@@ -125,15 +122,23 @@ class DropdownMenu extends Component {
 
     createCurrenciesToDisplay() {
         this.currenciesToDisplay = Object.values(this.props.currencies).map((x) => {
-        return <li key={x.label} className={'drop-currency-field'}>{x.symbol} {x.label}</li>})
+            return <li key={x.label} className={'drop-currency-field'}>{x.symbol} {x.label}</li>
+        })
     }
 
-    componentDidUpdate() {
-        this.createCurrenciesToDisplay()
+    componentDidUpdate(prevProps) {
+        this.changeCurrency()
+        if (JSON.stringify(prevProps.currencies) !== JSON.stringify(this.props.currencies)) {
+            console.log('UPDATE DROPDOWN')
+            this.createCurrenciesToDisplay()
+        }
     }
 
-    componentDidMount() {
-        this.createCurrenciesToDisplay()
+    changeCurrency() {
+        const currencyFields = document.querySelectorAll('.drop-currency-field')
+        currencyFields.forEach((field) => {
+            field.addEventListener('click', () => { this.props.changeCurrency(field.textContent) })
+        })
     }
 
     render() {
@@ -177,16 +182,22 @@ class Header extends Component {
         await this.getCurrencyData()
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (JSON.stringify(prevState) !== JSON.stringify(this.state)) {
+            this.getCurrencyData()
+            console.log(prevState)
+        }
+    }
+
     render() {
-        this.getCurrencyData()
         return (
             <header>
                 <Menu changeCategory={this.props.changeCategory} />
                 <Logo />
                 <div className='rightside-header'>
-                    <Currency currencies={this.state} />
+                    <Currency pickedCurrency={this.props.pickedCurrency} />
                     <Cart />
-                    <DropdownMenu currencies={this.state} />
+                    <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>
         )

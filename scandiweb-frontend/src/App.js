@@ -16,10 +16,16 @@ class App extends Component {
       pickedCurrency: '$'
     }
     this.changeState = this.changeState.bind(this)
+    this.changeCurrency = this.changeCurrency.bind(this)
   }
 
   changeState(newCategory) {
     this.setState({ pickedCategory: newCategory })
+  }
+
+  changeCurrency(newCurrency) {
+    const symbol = newCurrency.split(' ')[0]
+    this.setState({ pickedCurrency: symbol })
   }
 
   // query{
@@ -39,9 +45,9 @@ class App extends Component {
   render() {
     return (
       <div className='container'>
-        <Header pickedCategory={this.state.pickedCategory} changeCategory={this.changeState} />
+        <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} changeCategory={this.changeState} changeCurrency={this.changeCurrency} />
         <Category pickedCategory={this.state.pickedCategory} />
-        <Products pickedCategory={this.state.pickedCategory} />
+        <Products pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} />
       </div>
     )
   }

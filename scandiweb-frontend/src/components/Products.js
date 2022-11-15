@@ -31,7 +31,6 @@ class Products extends Component {
         try {
             const productsData = await client.post(productsQuery)
             this.setState({ products: await productsData.category.products })
-            console.log(this.state)
         } catch (error) {
             console.log(`Unable to get data from server: ${error}`)
         }
@@ -40,6 +39,7 @@ class Products extends Component {
     populateCards(category) {
         if (this.state !== null) {
             const productCards = this.state.products.map((product) => {
+                const indexOfCurrency = product.prices.findIndex((currency) => currency.currency.symbol === this.props.pickedCurrency)
                 if (product.category.toUpperCase() === category) {
                     if (product.name === 'Jacket') {
                         return (
@@ -47,7 +47,7 @@ class Products extends Component {
                                 <img src={product.gallery[5]} alt={product.name} className='product-img'></img>
                                 <div className="product-info">
                                     <p className='product-name'>{product.name}</p>
-                                    <p className='product-price'>{product.prices[0].currency.symbol}{product.prices[0].amount}</p>
+                                    <p className='product-price'>{product.prices[indexOfCurrency].currency.symbol}{product.prices[indexOfCurrency].amount}</p>
                                 </div>
                             </div>
                         )
@@ -57,7 +57,7 @@ class Products extends Component {
                                 <img src={product.gallery[0]} alt={product.name} className='product-img'></img>
                                 <div className="product-info">
                                     <p className='product-name'>{product.name}</p>
-                                    <p className='product-price'>{product.prices[0].currency.symbol}{product.prices[0].amount}</p>
+                                    <p className='product-price'>{product.prices[indexOfCurrency].currency.symbol}{product.prices[indexOfCurrency].amount}</p>
                                 </div>
                             </div>
                         )
