@@ -15,6 +15,7 @@
 }
 
 .product-card {
+    position: relative;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -54,4 +55,26 @@
 
 .product-price {
     font-weight: 500;
+}
+
+.cart-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5ece7c00;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    position: absolute;
+    left: 320px;
+    bottom: 52px;
+    transition: 500ms;
+}
+
+.cart-circle-img {
+    color: white;
+}
+
+.product-card:hover>.cart-circle {
+    background-color: #5ECE7B;
 }

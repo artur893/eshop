@@ -129,7 +129,6 @@ class DropdownMenu extends Component {
     componentDidUpdate(prevProps) {
         this.changeCurrency()
         if (JSON.stringify(prevProps.currencies) !== JSON.stringify(this.props.currencies)) {
-            console.log('UPDATE DROPDOWN')
             this.createCurrenciesToDisplay()
         }
     }
@@ -185,7 +184,6 @@ class Header extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (JSON.stringify(prevState) !== JSON.stringify(this.state)) {
             this.getCurrencyData()
-            console.log(prevState)
         }
     }
 
