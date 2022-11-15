@@ -26,14 +26,29 @@ class Products extends Component {
         this.getProductsData()
     }
 
+    componentDidUpdate() {
+        this.pickProductDetails()
+    }
+
     async getProductsData() {
-        const productsQuery = new Query('category{products{name, gallery,  category, prices{currency{label, symbol}, amount}}}')
+        const productsQuery = new Query('category{products{id, name, inStock, gallery, description, category, attributes{id,name,type,items{displayValue,value,id}}, prices{currency{label,symbol},amount}, brand}}')
         try {
             const productsData = await client.post(productsQuery)
             this.setState({ products: await productsData.category.products })
         } catch (error) {
             console.log(`Unable to get data from server: ${error}`)
         }
+    }
+
+    pickProductDetails() {
+        const cards = document.querySelectorAll('.product-card')
+        cards.forEach((card) => {
+            card.addEventListener('click', () => {
+                const nameDiv = card.querySelector('.product-name')
+                this.props.changeProduct(nameDiv.textContent)
+                this.props.hideProducts()
+            })
+        })
     }
 
     populateCards(category) {

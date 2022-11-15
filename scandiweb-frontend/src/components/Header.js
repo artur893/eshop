@@ -72,7 +72,7 @@ class Menu extends Component {
 class Logo extends Component {
 
     render() {
-        return <img src={GithubLogo} alt='github logo'></img>
+        return <a href="https://github.com/artur893" className='git-logo'><img src={GithubLogo} alt='github logo'></img></a>
     }
 }
 
