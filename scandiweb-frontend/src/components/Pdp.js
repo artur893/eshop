@@ -32,6 +32,11 @@ class Pdp extends Component {
     }
 
     displayMainPhoto() {
+        if (!this.state.mainImg) {
+            const indexOfProduct = this.props.productsData.findIndex((product) => product.name === this.props.pickedProduct)
+            console.log(this.props)
+            return <img className='main-image' src={this.props.productsData[indexOfProduct].gallery[0]} alt={this.state.name}></img>
+        }
         if (this.state.mainImg) {
             return <img className='main-image' src={this.state.mainImg} alt={this.state.name}></img>
         }
