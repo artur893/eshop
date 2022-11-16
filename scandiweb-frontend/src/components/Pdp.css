@@ -20,3 +20,74 @@
 .main-image {
     height: 500px;
 }
+
+.main-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+}
+
+.product-title {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.product-brand {
+    margin: 0 0 40px 0;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.attribute-name {
+    margin: 0;
+    font-family: 'Roboto Condensed';
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.attribute-pack {
+    margin: 20px 0;
+}
+
+.attribute-values {
+    display: flex;
+}
+
+.attribute-value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 10px 0 0;
+    border: solid 1px black;
+    width: 63px;
+    height: 45px;
+    font-family: 'Source Sans Pro';
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.attribute-value:hover {
+    color: white;
+    background-color: black;
+    cursor: default;
+}
+
+.color-container {
+    border: solid 1px rgb(255, 255, 255);
+    margin: 5px 5px 5px 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-container:hover {
+    border: solid 1px rgb(50, 175, 50);
+}
+
+.color-pick {
+    width: 28px;
+    height: 28px;
+}
