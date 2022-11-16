@@ -20,12 +20,16 @@ class Products extends Component {
         }
     }
 
-    componentDidUpdate() {
-        if (!this.state.isLoadedData) {
-            this.setState({ products: this.props.productsData })
-            this.setState({ isLoadedData: true })
-        }
+    componentDidMount() {
         this.pickProductDetails()
+    }
+
+    componentDidUpdate() {
+        this.pickProductDetails()
+    }
+
+    scrollToTop() {
+        window.scrollTo(0, 0);
     }
 
     pickProductDetails() {
@@ -34,14 +38,15 @@ class Products extends Component {
             card.addEventListener('click', () => {
                 const nameDiv = card.querySelector('.product-name')
                 this.props.changeProduct(nameDiv.textContent)
-                this.props.hideProducts()
+                this.props.hideProducts(true)
+                this.scrollToTop()
             })
         })
     }
 
     populateCards(category) {
-        if (this.state.products) {
-            const productCards = this.state.products.map((product) => {
+        if (this.props.productsData) {
+            const productCards = this.props.productsData.map((product) => {
                 const indexOfCurrency = product.prices.findIndex((currency) => currency.currency.symbol === this.props.pickedCurrency)
                 if (product.category.toUpperCase() === category) {
                     if (product.name === 'Jacket') {

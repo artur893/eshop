@@ -51,6 +51,7 @@ class Menu extends Component {
         menuElements.forEach((element) => element.classList.remove('active'))
         e.target.classList.add('active')
         this.props.changeCategory(e.target.textContent)
+        this.props.hideProducts(false)
     }
 
     async componentDidMount() {
@@ -190,7 +191,7 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <Menu changeCategory={this.props.changeCategory} />
+                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts}/>
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />

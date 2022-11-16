@@ -1,6 +1,11 @@
 .pdp-container {
     margin: 100px 0;
     display: flex;
+    justify-content: space-between;
+}
+
+.details {
+    width: 305px;
 }
 
 .small-photo {
@@ -18,7 +23,7 @@
 }
 
 .main-image {
-    height: 500px;
+    height: 480px;
 }
 
 .main-image-container {
@@ -52,13 +57,14 @@
 
 .attribute-values {
     display: flex;
+    gap: 15px;
 }
 
 .attribute-value {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 5px 10px 0 0;
+    margin: 5px 0;
     border: solid 1px black;
     width: 63px;
     height: 45px;
@@ -75,7 +81,7 @@
 
 .color-container {
     border: solid 1px rgb(255, 255, 255);
-    margin: 5px 5px 5px 0;
+    margin: 5px 0;
     width: 32px;
     height: 32px;
     display: flex;
@@ -108,7 +114,7 @@
     box-shadow: 0 0 4px 0px #5ECE7B;
     background-color: #5ECE7B;
     color: white;
-    width: 292px;
+    width: 305px;
     height: 52px;
     font-family: 'Raleway';
     font-weight: 600;

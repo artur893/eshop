@@ -22,11 +22,13 @@ class App extends Component {
     this.changeState = this.changeState.bind(this)
     this.changeCurrency = this.changeCurrency.bind(this)
     this.changeProduct = this.changeProduct.bind(this)
-    this.setIsDetailCardActiveToTrue = this.setIsDetailCardActiveToTrue.bind(this)
+    this.setIsDetailCard = this.setIsDetailCard.bind(this)
   }
 
   componentDidMount() {
-    this.getProductsData()
+    if (this.state.productsData === null) {
+      this.getProductsData()
+    }
   }
 
   async getProductsData() {
@@ -52,8 +54,8 @@ class App extends Component {
     this.setState({ pickedProduct: newProduct })
   }
 
-  setIsDetailCardActiveToTrue() {
-    this.setState({ isDetailCardActive: true })
+  setIsDetailCard(value) {
+    this.setState({ isDetailCardActive: value })
   }
 
   displayCategoryName() {
@@ -65,13 +67,13 @@ class App extends Component {
   displayProductsList() {
     if (this.state.isDetailCardActive === false) {
       return <Products pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency}
-        productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setIsDetailCardActiveToTrue} />
+        productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setIsDetailCard} />
     }
   }
 
   displayPDP() {
     if (this.state.isDetailCardActive === true) {
-      return <Pdp productsData={this.state.productsData} pickedProduct={this.state.pickedProduct} pickedCurrency={this.state.pickedCurrency}/>
+      return <Pdp productsData={this.state.productsData} pickedProduct={this.state.pickedProduct} pickedCurrency={this.state.pickedCurrency} />
     }
   }
 
@@ -79,7 +81,7 @@ class App extends Component {
     return (
       <div className='container'>
         <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency}
-          changeCategory={this.changeState} changeCurrency={this.changeCurrency} />
+          changeCategory={this.changeState} changeCurrency={this.changeCurrency} hideProducts={this.setIsDetailCard} />
         {this.displayCategoryName()}
         {this.displayProductsList()}
         {this.displayPDP()}
