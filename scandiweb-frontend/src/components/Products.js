@@ -18,30 +18,14 @@ class Products extends Component {
         this.state = {
             isLoadedData: false
         }
+
+        this.pickProductDetails = this.pickProductDetails.bind(this)
     }
 
-    componentDidMount() {
-        this.pickProductDetails()
-    }
-
-    componentDidUpdate() {
-        this.pickProductDetails()
-    }
-
-    scrollToTop() {
+    pickProductDetails(e) {
+        this.props.changeProduct(e.target.alt)
+        this.props.hideProducts(true)
         window.scrollTo(0, 0);
-    }
-
-    pickProductDetails() {
-        const cards = document.querySelectorAll('.product-card')
-        cards.forEach((card) => {
-            card.addEventListener('click', () => {
-                const nameDiv = card.querySelector('.product-name')
-                this.props.changeProduct(nameDiv.textContent)
-                this.props.hideProducts(true)
-                this.scrollToTop()
-            })
-        })
     }
 
     populateCards(category) {
@@ -51,7 +35,7 @@ class Products extends Component {
                 if (product.category.toUpperCase() === category) {
                     if (product.name === 'Jacket') {
                         return (
-                            <div className="product-card" key={product.name}>
+                            <div className="product-card" key={product.name} onClick={this.pickProductDetails}>
                                 <img src={product.gallery[5]} alt={product.name} className='product-img'></img>
                                 <div className='cart-circle'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" className="bi bi-cart2" viewBox="0 0 16 16">
@@ -66,7 +50,7 @@ class Products extends Component {
                         )
                     } else {
                         return (
-                            <div className="product-card" key={product.name}>
+                            <div className="product-card" key={product.name} onClick={this.pickProductDetails}>
                                 <img src={product.gallery[0]} alt={product.name} className='product-img'></img>
                                 <div className='cart-circle'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" className="bi bi-cart2" viewBox="0 0 16 16">

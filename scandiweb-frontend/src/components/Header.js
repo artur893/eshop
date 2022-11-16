@@ -116,7 +116,10 @@ class DropdownMenu extends Component {
     constructor(props) {
         super(props)
 
+        this.state = { isChangeCurrencyAdded: false }
+
         this.createCurrenciesToDisplay = this.createCurrenciesToDisplay.bind(this)
+        this.changeCurrency = this.changeCurrency.bind(this)
     }
 
     currenciesToDisplay = []
@@ -128,22 +131,18 @@ class DropdownMenu extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        this.changeCurrency()
         if (JSON.stringify(prevProps.currencies) !== JSON.stringify(this.props.currencies)) {
             this.createCurrenciesToDisplay()
         }
     }
 
-    changeCurrency() {
-        const currencyFields = document.querySelectorAll('.drop-currency-field')
-        currencyFields.forEach((field) => {
-            field.addEventListener('click', () => { this.props.changeCurrency(field.textContent) })
-        })
+    changeCurrency(e) {
+        this.props.changeCurrency(e.target.textContent)
     }
 
     render() {
         return (
-            <ul className='dropdown-menu'>
+            <ul className='dropdown-menu' onClick={this.changeCurrency}>
                 {this.currenciesToDisplay}
             </ul>
         )
@@ -191,7 +190,7 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts}/>
+                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} />
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />

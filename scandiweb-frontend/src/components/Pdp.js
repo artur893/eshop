@@ -5,16 +5,13 @@ class Pdp extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { isAddedEventListener: false }
+        this.state = { mainImg: null }
 
+        this.getMainPhotoUrl = this.getMainPhotoUrl.bind(this)
     }
 
     componentDidMount() {
         this.getPickedProductData()
-    }
-
-    componentDidUpdate() {
-        this.getMainPhotoUrl()
     }
 
     async getPickedProductData() {
@@ -24,23 +21,13 @@ class Pdp extends Component {
 
     displayGalleryList() {
         if (this.state.gallery) {
-            const gallery = this.state.gallery.map((photo) => <img key={photo} className='small-photo' src={photo} alt={`${this.state.name}`}></img>)
+            const gallery = this.state.gallery.map((photo) => <img key={photo} className='small-photo' src={photo} alt={`${this.state.name}`} onClick={this.getMainPhotoUrl}></img>)
             return gallery
         }
-
     }
 
-    getMainPhotoUrl() {
-        if (!this.state.isAddedEventListener) {
-            const photosContainer = document.querySelector('.small-images')
-            const photos = photosContainer.querySelectorAll('.small-photo')
-            photos.forEach((photo) => {
-                photo.addEventListener('click', (e) => {
-                    this.setState({ mainImg: e.target.src })
-                })
-            })
-            this.setState({ isAddedEventListener: true })
-        }
+    getMainPhotoUrl(e) {
+        this.setState({ mainImg: e.target.src })
     }
 
     displayMainPhoto() {
