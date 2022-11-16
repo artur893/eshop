@@ -24,7 +24,7 @@
 .main-image-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 800px;
 }
 
@@ -84,10 +84,65 @@
 }
 
 .color-container:hover {
-    border: solid 1px rgb(50, 175, 50);
+    border: solid 1px #5ECE7B;
 }
 
 .color-pick {
     width: 28px;
     height: 28px;
+}
+
+.price-container {
+    margin: 40px 0;
+}
+
+.price-value {
+    font-family: 'Raleway';
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.buy-button {
+    margin: 0 0 40px 0;
+    border: none;
+    box-shadow: 0 0 4px 0px #5ECE7B;
+    background-color: #5ECE7B;
+    color: white;
+    width: 292px;
+    height: 52px;
+    font-family: 'Raleway';
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.buy-button:hover {
+    box-shadow: none
+}
+
+.description-container {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 160%;
+}
+
+.description-container>p {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 160%;
+}
+
+.description-container>h1 {
+    font-family: 'Roboto';
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 160%;
+}
+
+.description-container>h3 {
+    font-family: 'Roboto';
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 160%;
 }
