@@ -10,6 +10,7 @@ class Pdp extends Component {
         this.getMainPhotoUrl = this.getMainPhotoUrl.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.addAttributeToState = this.addAttributeToState.bind(this)
+        this.removeActiveClass = this.removeActiveClass.bind(this)
     }
 
     componentDidMount() {
@@ -42,6 +43,12 @@ class Pdp extends Component {
         }
     }
 
+    removeActiveClass(className) {
+        const elements = document.querySelectorAll(className)
+        console.log(elements)
+        elements.forEach((elem) => elem.classList.remove('active'))
+    }
+
     displayAttibutes() {
         if (this.state.attributes) {
             const attributesToDisplay = this.state.attributes.map((attribute) => {
@@ -52,7 +59,11 @@ class Pdp extends Component {
                             {attribute.items.map((att) => {
                                 if (attribute.name === 'Color') {
                                     return (
-                                        <div key={att.value} className="color-container">
+                                        <div key={att.value} className='color-container'
+                                            onClick={(e) => {
+                                                this.removeActiveClass('.color-container')
+                                                e.target.parentElement.classList.add('active')
+                                            }}>
                                             <div key={att.value} style={{ backgroundColor: att.value }} className='color-pick'
                                                 attributeid={attribute.id} attributevalue={att.value} onClick={this.addAttributeToState}>
                                             </div>
@@ -60,7 +71,12 @@ class Pdp extends Component {
                                 } else {
                                     return (
                                         <div key={att.value} className='attribute-value' attributeid={attribute.id}
-                                            attributevalue={att.value} onClick={this.addAttributeToState}>{att.value}
+                                            attributevalue={att.value} onClick={(e) => {
+                                                this.addAttributeToState(e)
+                                                console.log(attribute.id)
+                                                this.removeActiveClass(`[attributeid="${attribute.id}"]`)
+                                                e.target.classList.add('active')
+                                            }}>{att.value}
                                         </div>)
                                 }
                             })
@@ -84,7 +100,7 @@ class Pdp extends Component {
                 const index = this.state.pickedAttributes.findIndex((att) => att[attributeId])
                 const state = this.state.pickedAttributes
                 state[index] = pickedAttributes
-                this.setState({ state })
+                this.setState({ pickedAttributes: state })
             } else {
                 this.setState({
                     pickedAttributes: [...this.state.pickedAttributes, pickedAttributes]

@@ -79,6 +79,11 @@
     cursor: default;
 }
 
+.attribute-value.active {
+    color: white;
+    background-color: black;
+}
+
 .color-container {
     border: solid 1px rgb(255, 255, 255);
     margin: 5px 0;
@@ -90,6 +95,10 @@
 }
 
 .color-container:hover {
+    border: solid 1px #5ECE7B;
+}
+
+.color-container.active {
     border: solid 1px #5ECE7B;
 }
 
