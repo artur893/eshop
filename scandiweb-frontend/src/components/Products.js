@@ -28,6 +28,18 @@ class Products extends Component {
         window.scrollTo(0, 0);
     }
 
+    displayOutOfStock(product) {
+        if (!product.inStock) {
+            return <p className='out-of-stock'>OUT OF STOCK</p>
+        }
+    }
+
+    addOutOfStockClass(product) {
+        if (!product.inStock) {
+            return 'out-of-stock'
+        }
+    }
+
     populateCards(category) {
         if (this.props.productsData) {
             const productCards = this.props.productsData.map((product) => {
@@ -35,7 +47,8 @@ class Products extends Component {
                 if (product.category.toUpperCase() === category) {
                     if (product.name === 'Jacket') {
                         return (
-                            <div className="product-card" key={product.name} onClick={this.pickProductDetails}>
+                            <div className='product-card' id={this.addOutOfStockClass(product)} key={product.name} onClick={this.pickProductDetails}>
+                                {this.displayOutOfStock(product)}
                                 <img src={product.gallery[5]} alt={product.name} className='product-img'></img>
                                 <div className='cart-circle'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" className="bi bi-cart2" viewBox="0 0 16 16">
@@ -50,7 +63,8 @@ class Products extends Component {
                         )
                     } else {
                         return (
-                            <div className="product-card" key={product.name} onClick={this.pickProductDetails}>
+                            <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name} onClick={this.pickProductDetails}>
+                                {this.displayOutOfStock(product)}
                                 <img src={product.gallery[0]} alt={product.name} className='product-img'></img>
                                 <div className='cart-circle'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" className="bi bi-cart2" viewBox="0 0 16 16">
