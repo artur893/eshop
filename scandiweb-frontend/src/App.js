@@ -23,6 +23,7 @@ class App extends Component {
     this.changeCurrency = this.changeCurrency.bind(this)
     this.changeProduct = this.changeProduct.bind(this)
     this.setIsDetailCard = this.setIsDetailCard.bind(this)
+    this.addToCart = this.addToCart.bind(this)
   }
 
   componentDidMount() {
@@ -58,6 +59,13 @@ class App extends Component {
     this.setState({ isDetailCardActive: value })
   }
 
+  addToCart(id, attributesToCart) {
+    this.setState({
+      productToCartId: id,
+      attributesToCart
+    })
+  }
+
   displayCategoryName() {
     if (this.state.isDetailCardActive === false) {
       return <Category pickedCategory={this.state.pickedCategory} />
@@ -73,7 +81,7 @@ class App extends Component {
 
   displayPDP() {
     if (this.state.isDetailCardActive === true) {
-      return <Pdp productsData={this.state.productsData} pickedProduct={this.state.pickedProduct} pickedCurrency={this.state.pickedCurrency} />
+      return <Pdp productsData={this.state.productsData} pickedProduct={this.state.pickedProduct} pickedCurrency={this.state.pickedCurrency} addToCart={this.addToCart} />
     }
   }
 

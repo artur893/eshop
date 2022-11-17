@@ -35,6 +35,7 @@
 }
 
 .product-card>.out-of-stock {
+    pointer-events: none;
     position: absolute;
     top: 180px;
     color: #8D8F9A;

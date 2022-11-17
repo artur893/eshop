@@ -8,6 +8,8 @@ class Pdp extends Component {
         this.state = { mainImg: null }
 
         this.getMainPhotoUrl = this.getMainPhotoUrl.bind(this)
+        this.addToCart = this.addToCart.bind(this)
+        this.addAttributeToState = this.addAttributeToState.bind(this)
     }
 
     componentDidMount() {
@@ -51,10 +53,15 @@ class Pdp extends Component {
                                 if (attribute.name === 'Color') {
                                     return (
                                         <div key={att.value} className="color-container">
-                                            <div key={att.value} style={{ backgroundColor: att.value }} className='color-pick'></div>
+                                            <div key={att.value} style={{ backgroundColor: att.value }} className='color-pick'
+                                                attributeid={attribute.id} attributevalue={att.value} onClick={this.addAttributeToState}>
+                                            </div>
                                         </div>)
                                 } else {
-                                    return <div key={att.value} className='attribute-value'>{att.value}</div>
+                                    return (
+                                        <div key={att.value} className='attribute-value' attributeid={attribute.id}
+                                            attributevalue={att.value} onClick={this.addAttributeToState}>{att.value}
+                                        </div>)
                                 }
                             })
                             }
@@ -63,6 +70,30 @@ class Pdp extends Component {
                 )
             })
             return attributesToDisplay
+        }
+    }
+
+    addAttributeToState(e) {
+        const attributeId = e.target.attributes.attributeid.value
+        const attributeValue = e.target.attributes.attributevalue.value
+        const pickedAttributes = {}
+        pickedAttributes[attributeId] = attributeValue
+        if (this.state.pickedAttributes) {
+            const isRepetedId = this.state.pickedAttributes.some((attribute) => attributeId in attribute)
+            if (isRepetedId) {
+                const index = this.state.pickedAttributes.findIndex((att) => att[attributeId])
+                const state = this.state.pickedAttributes
+                state[index] = pickedAttributes
+                this.setState({ state })
+            } else {
+                this.setState({
+                    pickedAttributes: [...this.state.pickedAttributes, pickedAttributes]
+                })
+            }
+        } else {
+            this.setState({
+                pickedAttributes: [pickedAttributes]
+            })
         }
     }
 
@@ -85,6 +116,10 @@ class Pdp extends Component {
         }
     }
 
+    addToCart() {
+        this.props.addToCart(this.state.id, this.state.pickedAttributes)
+    }
+
     render() {
         if (this.state !== null) {
             return (
@@ -96,7 +131,7 @@ class Pdp extends Component {
                         <h3 className='product-brand'>{this.state.brand}</h3>
                         {this.displayAttibutes()}
                         {this.displayPrice()}
-                        <button className='buy-button'>ADD TO CART</button>
+                        <button className='buy-button' onClick={this.addToCart}>ADD TO CART</button>
                         <div className='description-container'>{this.displayDescription()}</div>
                     </div>
                 </div>)
