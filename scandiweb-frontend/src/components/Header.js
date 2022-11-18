@@ -5,6 +5,7 @@ import dropdownImg from '../images/dropdown.svg'
 import arrowUpImg from '../images/arrowup.svg'
 import cartImg from '../images/cart2.svg'
 import { client, Query } from '@tilework/opus'
+import { v4 as uuid } from 'uuid';
 
 const endpointUrl = 'http://localhost:4000/'
 client.setEndpoint(endpointUrl)
@@ -191,30 +192,82 @@ class Cart extends Component {
     }
 
     render() {
-        return <div className='cart-container' onClick={this.showCartDetails}><CartDetails isDropped={this.state.isDropped}
-            cartDetails={this.state.cart} /><img src={cartImg} alt='cart button'></img>{this.displayCartLength()}</div>
+        return (
+            <div className='cart-container'><CartDetails isDropped={this.state.isDropped}
+                cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} />
+                <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayCartLength()}
+            </div>)
     }
 }
 
 class CartDetails extends Component {
 
     displayName(product) {
-        return <div>{product.name}</div>
+        return <div key={uuid()} className='cart-details-name'>{product.name}</div>
     }
 
     displayBrand(product) {
-        return <div>{product.brand}</div>
+        return <div key={uuid()} className='cart-details-brand'>{product.brand}</div>
+    }
+
+    displayPrice(product) {
+        const indexOfPrice = product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+        return <div key={uuid()} className='cart-details-price'>{product.prices[indexOfPrice].currency.symbol}{product.prices[indexOfPrice].amount}</div>
+    }
+
+    displayAttributes(product) {
+        const attributesToDisplay = product.attributes.map((attribute) => {
+            return (
+                <div key={attribute.name} className='cart-details-attribute-pack'>
+                    <div key={attribute.name} className='cart-details-attribute-name'>{attribute.name}:</div>
+                    <div key={`${attribute.name}-2`} className='cart-details-attribute-values'>
+                        {attribute.items.map((att) => {
+                            if (attribute.name === 'Color') {
+                                return (
+                                    <div key={att.value} className='cart-details-color-container'>
+                                        <div key={att.value} style={{ backgroundColor: att.value }} className='cart-details-color-pick'
+                                            attributeid={attribute.id} attributevalue={att.value}>
+                                        </div>
+                                    </div>)
+                            } else {
+                                return (
+                                    <div key={att.value} className='cart-details-attribute-value' attributeid={attribute.id}
+                                        attributevalue={att.value}>{att.value}
+                                    </div>)
+                            }
+                        })
+                        }
+                    </div>
+                </div>
+            )
+        })
+        return attributesToDisplay
+    }
+
+    displayPhoto(product) {
+        return(
+            <div className='cart-details-photo'><img src={product.gallery[0]} alt={product.name}></img></div>
+        )
     }
 
 
     displayProductCards() {
         if (this.props.cartDetails) {
-            console.log(this.props.cartDetails)
             const cardsToDisplay = this.props.cartDetails.map((product) => {
                 return (
-                    <div>
-                        {this.displayName(product)}
-                        {this.displayBrand(product)}
+                    <div key={uuid()} className='cart-details-card'>
+                        <div className='cart-details-left'>
+                            {this.displayName(product)}
+                            {this.displayBrand(product)}
+                            {this.displayPrice(product)}
+                            {this.displayAttributes(product)}
+                        </div>
+                        <div className='cart-details-quantity'>
+                            <div className='cart-details-count'>+</div>
+                            <div className='cart-details-number'>#</div>
+                            <div className='cart-details-count'>-</div>
+                        </div>
+                        {this.displayPhoto(product)}
                     </div>
                 )
             })
@@ -225,9 +278,9 @@ class CartDetails extends Component {
     displayCartDetails() {
         if (this.props.isDropped) {
             return (
-                <div className='cart-details'>
-                    <div className='details-cart-title'>My Bag</div>
-                    {this.displayProductCards()}
+                <div key={uuid()} className='cart-details'>
+                    <div key={uuid()} className='cart-details-title'>My Bag</div>
+                    <div className='cart-details-attributes'>{this.displayProductCards()}</div>
                 </div>)
         }
     }
@@ -275,7 +328,7 @@ class Header extends Component {
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />
-                    <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} />
+                    <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} pickedCurrency={this.props.pickedCurrency} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>
