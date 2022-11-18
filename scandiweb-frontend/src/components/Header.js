@@ -153,15 +153,35 @@ class Cart extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { cart: [] }
+        this.state = {
+            isDropped: false,
+            cart: []
+        }
+
+        this.showCartDetails = this.showCartDetails.bind(this)
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.sendToCart !== this.props.sendToCart) {
-            const cart = this.state.cart
-            cart.push(this.props.sendToCart)
-            this.setState(cart)
+            this.addToCart()
         }
+    }
+
+    showCartDetails() {
+        this.state.isDropped ? this.setState({ isDropped: false }) : this.setState({ isDropped: true })
+    }
+
+    addToCart() {
+        const product = this.findProduct()
+        const cart = this.state.cart
+        cart.push(product)
+        this.setState({ cart: cart })
+    }
+
+    findProduct() {
+        const productToCart = JSON.parse(JSON.stringify(this.props.productsData.find(product => product.id === this.props.sendToCart.id)))
+        productToCart['pickedAttributes'] = this.props.sendToCart.attributesToCart
+        return productToCart
     }
 
     displayCartLength() {
@@ -171,7 +191,49 @@ class Cart extends Component {
     }
 
     render() {
-        return <div className='cart-container'><img src={cartImg} alt='cart button'></img>{this.displayCartLength()}</div>
+        return <div className='cart-container' onClick={this.showCartDetails}><CartDetails isDropped={this.state.isDropped}
+            cartDetails={this.state.cart} /><img src={cartImg} alt='cart button'></img>{this.displayCartLength()}</div>
+    }
+}
+
+class CartDetails extends Component {
+
+    displayName(product) {
+        return <div>{product.name}</div>
+    }
+
+    displayBrand(product) {
+        return <div>{product.brand}</div>
+    }
+
+
+    displayProductCards() {
+        if (this.props.cartDetails) {
+            console.log(this.props.cartDetails)
+            const cardsToDisplay = this.props.cartDetails.map((product) => {
+                return (
+                    <div>
+                        {this.displayName(product)}
+                        {this.displayBrand(product)}
+                    </div>
+                )
+            })
+            return cardsToDisplay
+        }
+    }
+
+    displayCartDetails() {
+        if (this.props.isDropped) {
+            return (
+                <div className='cart-details'>
+                    <div className='details-cart-title'>My Bag</div>
+                    {this.displayProductCards()}
+                </div>)
+        }
+    }
+
+    render() {
+        return (this.displayCartDetails())
     }
 }
 

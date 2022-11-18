@@ -134,6 +134,10 @@
     box-shadow: none
 }
 
+.buy-button:active {
+    background-color: #47c769;
+}
+
 .description-container {
     font-family: 'Roboto';
     font-weight: 400;

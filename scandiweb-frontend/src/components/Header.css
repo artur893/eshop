@@ -50,6 +50,14 @@ header {
     height: 20px;
 }
 
+.cart-details {
+    width: 325px;
+    position: absolute;
+    top: 31px;
+    right: -20px;
+    box-shadow: 0 0 10px 3px lightgray;
+}
+
 .number-products-cart {
     position: absolute;
     font-family: 'Roboto';
