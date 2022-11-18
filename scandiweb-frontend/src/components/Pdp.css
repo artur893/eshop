@@ -1,5 +1,5 @@
 .pdp-container {
-    margin: 100px 0;
+    margin: 100px 100px 0 0px;
     display: flex;
     justify-content: space-between;
 }
@@ -23,7 +23,7 @@
 }
 
 .main-image {
-    height: 480px;
+    height: 420px;
 }
 
 .main-image-container {
