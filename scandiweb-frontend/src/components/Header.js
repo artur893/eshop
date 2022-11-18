@@ -150,9 +150,28 @@ class DropdownMenu extends Component {
 }
 
 class Cart extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = { cart: [] }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.sendToCart !== this.props.sendToCart) {
+            const cart = this.state.cart
+            cart.push(this.props.sendToCart)
+            this.setState(cart)
+        }
+    }
+
+    displayCartLength() {
+        if (this.state.cart.length > 0) {
+            return <div className='number-products-cart'>{this.state.cart.length}</div>
+        }
+    }
 
     render() {
-        return <img src={cartImg} alt='cart button'></img>
+        return <div className='cart-container'><img src={cartImg} alt='cart button'></img>{this.displayCartLength()}</div>
     }
 }
 
@@ -194,7 +213,7 @@ class Header extends Component {
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />
-                    <Cart />
+                    <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>

@@ -42,8 +42,30 @@ header {
     gap: 20px
 }
 
-.rightside-header>img {
+.cart-container {
+    position: relative;
+}
+
+.cart-container>img {
     height: 20px;
+}
+
+.number-products-cart {
+    position: absolute;
+    font-family: 'Roboto';
+    font-weight: 600;
+    font-size: 12px;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    text-align: center;
+    color: white;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 12px;
+    top: -8px;
 }
 
 .currency-field {

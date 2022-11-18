@@ -61,8 +61,10 @@ class App extends Component {
 
   addToCart(id, attributesToCart) {
     this.setState({
-      productToCartId: id,
-      attributesToCart
+      productToCart: {
+        id,
+        attributesToCart
+      }
     })
   }
 
@@ -88,8 +90,8 @@ class App extends Component {
   render() {
     return (
       <div className='container'>
-        <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency}
-          changeCategory={this.changeState} changeCurrency={this.changeCurrency} hideProducts={this.setIsDetailCard} />
+        <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
+          changeCategory={this.changeState} changeCurrency={this.changeCurrency} hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} />
         {this.displayCategoryName()}
         {this.displayProductsList()}
         {this.displayPDP()}

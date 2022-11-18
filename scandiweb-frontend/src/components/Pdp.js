@@ -45,7 +45,6 @@ class Pdp extends Component {
 
     removeActiveClass(className) {
         const elements = document.querySelectorAll(className)
-        console.log(elements)
         elements.forEach((elem) => elem.classList.remove('active'))
     }
 
@@ -73,7 +72,6 @@ class Pdp extends Component {
                                         <div key={att.value} className='attribute-value' attributeid={attribute.id}
                                             attributevalue={att.value} onClick={(e) => {
                                                 this.addAttributeToState(e)
-                                                console.log(attribute.id)
                                                 this.removeActiveClass(`[attributeid="${attribute.id}"]`)
                                                 e.target.classList.add('active')
                                             }}>{att.value}
