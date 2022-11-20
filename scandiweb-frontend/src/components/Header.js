@@ -232,7 +232,7 @@ class CartDetails extends Component {
                             } else {
                                 return (
                                     <div key={att.value} className='cart-details-attribute-value' attributeid={attribute.id}
-                                        attributevalue={att.value}>{att.value}
+                                        attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)
                             }
                         })
