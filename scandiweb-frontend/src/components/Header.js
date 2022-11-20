@@ -174,6 +174,7 @@ class Cart extends Component {
 
     addToCart() {
         const product = this.findProduct()
+        product['pickedAttributes'] = this.props.sendToCart.attributesToCart
         const cart = this.state.cart
         cart.push(product)
         this.setState({ cart: cart })
@@ -181,7 +182,6 @@ class Cart extends Component {
 
     findProduct() {
         const productToCart = JSON.parse(JSON.stringify(this.props.productsData.find(product => product.id === this.props.sendToCart.id)))
-        productToCart['pickedAttributes'] = this.props.sendToCart.attributesToCart
         return productToCart
     }
 
@@ -201,6 +201,10 @@ class Cart extends Component {
 }
 
 class CartDetails extends Component {
+
+    componentDidUpdate() {
+        this.markPickedAttributes()
+    }
 
     displayName(product) {
         return <div key={uuid()} className='cart-details-name'>{product.name}</div>
@@ -245,9 +249,30 @@ class CartDetails extends Component {
     }
 
     displayPhoto(product) {
-        return(
+        return (
             <div className='cart-details-photo'><img src={product.gallery[0]} alt={product.name}></img></div>
         )
+    }
+
+    markPickedAttributes() {
+        const cartDetailsElement = document.querySelector('.cart-details')
+        if (cartDetailsElement) {
+            for (let i = 0; i < this.props.cartDetails.length; i++) {
+                if (this.props.cartDetails[i].pickedAttributes) {
+                    this.props.cartDetails[i].pickedAttributes.forEach((att) => {
+                        const key = Object.keys(att)
+                        const value = Object.values(att)
+                        const productCard = cartDetailsElement.querySelectorAll('.cart-details-card')
+                        const attributeContainer = productCard[i].querySelectorAll(`[attributeid="${key}"]`)
+                        attributeContainer.forEach((container) => {
+                            if (container.getAttribute('attributevalue') === value[0]) {
+                                container.classList.add('actived')
+                            }
+                        })
+                    })
+                }
+            }
+        }
     }
 
 
@@ -279,7 +304,7 @@ class CartDetails extends Component {
         if (this.props.isDropped) {
             return (
                 <div key={uuid()} className='cart-details'>
-                    <div key={uuid()} className='cart-details-title'>My Bag</div>
+                    <div key={uuid()} className='cart-details-title'>My Bag<span className='cart-details-span'>, # items</span></div>
                     <div className='cart-details-attributes'>{this.displayProductCards()}</div>
                 </div>)
         }

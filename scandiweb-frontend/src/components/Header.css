@@ -81,6 +81,10 @@ header {
     font-weight: 700;
 }
 
+.cart-details-span {
+    font-weight: 400;
+}
+
 .cart-details-name,
 .cart-details-brand {
     margin: 10px;
@@ -100,6 +104,11 @@ header {
     font-size: 13px;
     height: 32px;
     width: 32px;
+}
+
+.cart-details-attribute-value.actived {
+    background-color: black;
+    color: white;
 }
 
 .cart-details-attribute-values {
