@@ -175,9 +175,24 @@ class Cart extends Component {
     addToCart() {
         const product = this.findProduct()
         product['pickedAttributes'] = this.props.sendToCart.attributesToCart
+        product['quantity'] = 1
         const cart = JSON.parse(JSON.stringify(this.state.cart))
-        cart.push(product)
-        this.setState({ cart: cart })
+        if (this.state.cart.length === 0) {
+            cart.push(product)
+            this.setState({ cart: cart })
+        } else {
+            let isDuplicate = false
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === product.id && JSON.stringify(cart[i].pickedAttributes) === JSON.stringify(product.pickedAttributes)) {
+                    cart[i].quantity = cart[i].quantity + 1
+                    this.setState({ cart: cart })
+                    isDuplicate = true
+                }
+            } if (!isDuplicate) {
+                cart.push(product)
+                this.setState({ cart: cart })
+            }
+        }
     }
 
     findProduct() {
@@ -289,7 +304,7 @@ class CartDetails extends Component {
                         </div>
                         <div className='cart-details-quantity'>
                             <div className='cart-details-count'>+</div>
-                            <div className='cart-details-number'>#</div>
+                            <div className='cart-details-number'>{product.quantity}</div>
                             <div className='cart-details-count'>-</div>
                         </div>
                         {this.displayPhoto(product)}

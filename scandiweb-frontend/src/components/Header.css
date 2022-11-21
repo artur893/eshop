@@ -148,10 +148,12 @@ header {
     align-items: center;
     height: 32px;
     width: 32px;
+    font-weight: 500;
 }
 
 .cart-details-number {
     text-align: center;
+    font-weight: 500;
 }
 
 .cart-details-photo {
