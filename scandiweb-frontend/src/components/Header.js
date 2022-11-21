@@ -175,7 +175,7 @@ class Cart extends Component {
     addToCart() {
         const product = this.findProduct()
         product['pickedAttributes'] = this.props.sendToCart.attributesToCart
-        const cart = this.state.cart
+        const cart = JSON.parse(JSON.stringify(this.state.cart))
         cart.push(product)
         this.setState({ cart: cart })
     }
