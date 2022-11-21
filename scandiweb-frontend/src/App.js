@@ -1,7 +1,7 @@
 import { Header } from './components/Header'
 import { Category, Products } from './components/Products'
 import { Pdp } from './components/Pdp'
-import { Component } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { client, Query } from '@tilework/opus'
 
@@ -24,7 +24,14 @@ class App extends Component {
     this.changeProduct = this.changeProduct.bind(this)
     this.setIsDetailCard = this.setIsDetailCard.bind(this)
     this.addToCart = this.addToCart.bind(this)
+
+    this.header = React.createRef()
   }
+
+  onClick = () => {
+    console.log(this.header)
+    this.header.current.addToCart()
+  };
 
   componentDidMount() {
     if (this.state.productsData === null) {
@@ -59,13 +66,8 @@ class App extends Component {
     this.setState({ isDetailCardActive: value })
   }
 
-  addToCart(id, attributesToCart) {
-    this.setState({
-      productToCart: {
-        id,
-        attributesToCart
-      }
-    })
+  addToCart(productToCart) {
+    this.setState({ productToCart })
   }
 
   displayCategoryName() {
@@ -90,7 +92,8 @@ class App extends Component {
   render() {
     return (
       <div className='container'>
-        <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
+        <button onClick={this.onClick}>Click</button>
+        <Header ref={this.header} pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
           changeCategory={this.changeState} changeCurrency={this.changeCurrency} hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} />
         {this.displayCategoryName()}
         {this.displayProductsList()}

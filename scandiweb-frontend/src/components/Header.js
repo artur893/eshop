@@ -162,21 +162,19 @@ class Cart extends Component {
         this.showCartDetails = this.showCartDetails.bind(this)
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.sendToCart !== this.props.sendToCart) {
-            this.addToCart()
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.sendToCart !== this.props.sendToCart) {
+    //         this.addToCart()
+    //     }
+    // }
 
     showCartDetails() {
         this.state.isDropped ? this.setState({ isDropped: false }) : this.setState({ isDropped: true })
     }
 
     addToCart() {
-        const product = this.findProduct()
-        product['pickedAttributes'] = this.props.sendToCart.attributesToCart
-        const cart = this.state.cart
-        cart.push(product)
+        const cart = JSON.parse(JSON.stringify(this.state.cart))
+        cart.push(this.props.sendToCart)
         this.setState({ cart: cart })
     }
 
@@ -324,6 +322,11 @@ class Header extends Component {
                 label: '$'
             }
         }
+        this.cart = React.createRef()
+    }
+
+    addToCart() {
+        this.cart.current.addToCart()
     }
 
     async getCurrencyData() {
@@ -353,7 +356,7 @@ class Header extends Component {
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />
-                    <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} pickedCurrency={this.props.pickedCurrency} />
+                    <Cart ref={this.cart} productsData={this.props.productsData} sendToCart={this.props.sendToCart} pickedCurrency={this.props.pickedCurrency} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>

@@ -96,7 +96,7 @@ class Pdp extends Component {
             const isRepetedId = this.state.pickedAttributes.some((attribute) => attributeId in attribute)
             if (isRepetedId) {
                 const index = this.state.pickedAttributes.findIndex((att) => att[attributeId])
-                const state = this.state.pickedAttributes
+                const state = JSON.parse(JSON.stringify(this.state.pickedAttributes))
                 state[index] = pickedAttributes
                 this.setState({ pickedAttributes: state })
             } else {
@@ -131,7 +131,7 @@ class Pdp extends Component {
     }
 
     addToCart() {
-        this.props.addToCart(this.state.id, this.state.pickedAttributes)
+        this.props.addToCart(this.state)
     }
 
     render() {
