@@ -243,9 +243,8 @@ class CartDetails extends Component {
                         {attribute.items.map((att) => {
                             if (attribute.name === 'Color') {
                                 return (
-                                    <div key={att.value} className='cart-details-color-container'>
-                                        <div key={att.value} style={{ backgroundColor: att.value }} className='cart-details-color-pick'
-                                            attributeid={attribute.id} attributevalue={att.value}>
+                                    <div key={att.value} className='cart-details-color-container' attributeid={attribute.id} attributevalue={att.value}>
+                                        <div key={att.value} style={{ backgroundColor: att.value }} className='cart-details-color-pick'>
                                         </div>
                                     </div>)
                             } else {
@@ -315,13 +314,40 @@ class CartDetails extends Component {
         }
     }
 
+    totalQuantity() {
+        let quantity = 0
+        if (this.props.cartDetails.length > 0) {
+            this.props.cartDetails.forEach(product => quantity = quantity + product.quantity)
+        } return quantity
+    }
+
     displayCartDetails() {
         if (this.props.isDropped) {
             return (
                 <div key={uuid()} className='cart-details'>
-                    <div key={uuid()} className='cart-details-title'>My Bag<span className='cart-details-span'>, # items</span></div>
+                    <div key={uuid()} className='cart-details-title'>My Bag<span className='cart-details-span'>, {this.totalQuantity()} items</span></div>
                     <div className='cart-details-attributes'>{this.displayProductCards()}</div>
+                    {this.displaySummary()}
                 </div>)
+        }
+    }
+
+    displaySummary() {
+        if (this.props.cartDetails) {
+            const indexOfPrice = this.props.cartDetails[0].prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+            let totalPrice = 0
+            this.props.cartDetails.forEach((product) => {
+                totalPrice = totalPrice + (product.prices[indexOfPrice].amount * product.quantity)
+            })
+            return (
+                <div className='cart-details-summary'>
+                    <div className='cart-details-price'>
+                        <span className='cart-details-total'>Total</span>
+                        <span className='cart-details-totalprice'>{this.props.pickedCurrency}{totalPrice.toFixed(2)}</span>
+                    </div>
+                    <div className='cart-details-buttons'></div>
+                </div>
+            )
         }
     }
 
