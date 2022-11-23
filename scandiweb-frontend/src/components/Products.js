@@ -23,7 +23,8 @@ class Products extends Component {
     }
 
     pickProductDetails(e) {
-        this.props.changeProduct(e.target.alt)
+        const name = e.target.getAttribute('productid')
+        this.props.changeProduct(name)
         this.props.hideProducts(true)
         window.scrollTo(0, 0);
     }
@@ -47,7 +48,7 @@ class Products extends Component {
                 if (product.category.toUpperCase() === category) {
                     if (product.name === 'Jacket') {
                         return (
-                            <div className='product-card' id={this.addOutOfStockClass(product)} key={product.name} onClick={this.pickProductDetails}>
+                            <div className='product-card' id={this.addOutOfStockClass(product)} key={product.name} onClick={this.pickProductDetails} productid={product.name}>
                                 {this.displayOutOfStock(product)}
                                 <img src={product.gallery[5]} alt={product.name} className='product-img'></img>
                                 <div className='cart-circle'>
@@ -63,7 +64,7 @@ class Products extends Component {
                         )
                     } else {
                         return (
-                            <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name} onClick={this.pickProductDetails}>
+                            <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name} onClick={this.pickProductDetails} productid={product.name}>
                                 {this.displayOutOfStock(product)}
                                 <img src={product.gallery[0]} alt={product.name} className='product-img'></img>
                                 <div className='cart-circle'>

@@ -45,12 +45,14 @@
 }
 
 .product-img {
+    pointer-events: none;
     width: 360px;
     height: 360px;
     object-fit: contain;
 }
 
 .product-info {
+    pointer-events: none;
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -64,10 +66,14 @@
 }
 
 .product-name {
+    pointer-events: none;
+    cursor: default;
     font-weight: 300;
 }
 
 .product-price {
+    pointer-events: none;
+    cursor: default;
     font-weight: 500;
 }
 
@@ -83,6 +89,7 @@
     left: 320px;
     bottom: 52px;
     transition: 200ms;
+    pointer-events: none;
 }
 
 .cart-circle-img {
