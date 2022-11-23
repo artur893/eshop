@@ -160,6 +160,8 @@ class Cart extends Component {
         }
 
         this.showCartDetails = this.showCartDetails.bind(this)
+        this.plusProductQuantity = this.plusProductQuantity.bind(this)
+        this.minusProductQuantity = this.minusProductQuantity.bind(this)
     }
 
     componentDidUpdate(prevProps) {
@@ -200,17 +202,37 @@ class Cart extends Component {
         return productToCart
     }
 
-    displayCartLength() {
+    displayTotalQuantity() {
         if (this.state.cart.length > 0) {
-            return <div className='number-products-cart'>{this.state.cart.length}</div>
+            let totalQuantity = 0
+            this.state.cart.forEach(product => totalQuantity = totalQuantity + product.quantity)
+            return <div className='number-products-cart'>{totalQuantity}</div>
         }
+    }
+
+    plusProductQuantity(e) {
+        const index = e.target.getAttribute('index')
+        const cart = JSON.parse(JSON.stringify(this.state.cart))
+        cart[index].quantity += 1
+        this.setState({ cart })
+    }
+
+    minusProductQuantity(e) {
+        const index = e.target.getAttribute('index')
+        const cart = JSON.parse(JSON.stringify(this.state.cart))
+        cart[index].quantity -= 1
+        if (cart[index].quantity === 0) {
+            cart.splice(index, 1)
+            console.log(cart)
+        }
+        this.setState({ cart })
     }
 
     render() {
         return (
-            <div className='cart-container'><CartDetails isDropped={this.state.isDropped}
-                cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} />
-                <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayCartLength()}
+            <div className='cart-container'><CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity}
+                cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} plusProductQuantity={this.plusProductQuantity} />
+                <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayTotalQuantity()}
             </div>)
     }
 }
@@ -292,7 +314,9 @@ class CartDetails extends Component {
 
     displayProductCards() {
         if (this.props.cartDetails) {
+            let index = -1
             const cardsToDisplay = this.props.cartDetails.map((product) => {
+                index = index + 1
                 return (
                     <div key={uuid()} className='cart-details-card'>
                         <div className='cart-details-left'>
@@ -302,9 +326,9 @@ class CartDetails extends Component {
                             {this.displayAttributes(product)}
                         </div>
                         <div className='cart-details-quantity'>
-                            <div className='cart-details-count'>+</div>
+                            <div className='cart-details-count' index={index} onClick={(e) => this.props.plusProductQuantity(e)}>+</div>
                             <div className='cart-details-number'>{product.quantity}</div>
-                            <div className='cart-details-count'>-</div>
+                            <div className='cart-details-count' index={index} onClick={(e) => this.props.minusProductQuantity(e)}>-</div>
                         </div>
                         {this.displayPhoto(product)}
                     </div>

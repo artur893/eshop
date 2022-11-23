@@ -96,6 +96,7 @@ header {
 }
 
 .cart-details-attribute-value {
+    cursor: default;
     margin: 0 0 0 10px;
     display: flex;
     justify-content: center;
@@ -104,6 +105,10 @@ header {
     font-size: 13px;
     height: 32px;
     width: 32px;
+}
+
+.cart-details-attribute-value:hover {
+    background-color: rgb(235, 235, 235);
 }
 
 .cart-details-attribute-value.actived {
@@ -149,6 +154,7 @@ header {
 }
 
 .cart-details-count {
+    cursor: default;
     border: solid 1px black;
     display: flex;
     justify-content: center;
@@ -156,6 +162,15 @@ header {
     height: 32px;
     width: 32px;
     font-weight: 500;
+}
+
+.cart-details-count:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.cart-details-count:active {
+    color: white;
+    background-color: black;
 }
 
 .cart-details-number {
