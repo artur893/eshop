@@ -176,7 +176,7 @@ header {
 .cart-details-summary {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
 }
@@ -195,6 +195,52 @@ header {
 
 .cart-details-totalprice {
     font-weight: 700;
+}
+
+.cart-details-buttons {
+    width: 93%;
+    margin: 0 0 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-details-viewbag {
+    border: solid 1px black;
+    background-color: #FFFFFF;
+    width: 48%;
+    height: 43px;
+    font-family: 'Raleway';
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cart-details-viewbag:hover {
+    background-color: rgb(245, 245, 245);
+}
+
+.cart-details-viewbag:active {
+    background-color: rgb(235, 235, 235);
+}
+
+.cart-details-checkout {
+    border: none;
+    background-color: #5ECE7B;
+    box-shadow: 0 0 4px 0px #5ECE7B;
+    color: #EEEEEE;
+    width: 48%;
+    height: 43px;
+    font-family: 'Raleway';
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cart-details-checkout:hover {
+    box-shadow: none;
+}
+
+.cart-details-checkout:active {
+    background-color: #47c769;
 }
 
 .number-products-cart {

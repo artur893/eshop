@@ -333,7 +333,7 @@ class CartDetails extends Component {
     }
 
     displaySummary() {
-        if (this.props.cartDetails) {
+        if (this.props.cartDetails.length > 0) {
             const indexOfPrice = this.props.cartDetails[0].prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
             let totalPrice = 0
             this.props.cartDetails.forEach((product) => {
@@ -345,7 +345,10 @@ class CartDetails extends Component {
                         <span className='cart-details-total'>Total</span>
                         <span className='cart-details-totalprice'>{this.props.pickedCurrency}{totalPrice.toFixed(2)}</span>
                     </div>
-                    <div className='cart-details-buttons'></div>
+                    <div className='cart-details-buttons'>
+                        <button className='cart-details-viewbag'>VIEW BAG</button>
+                        <button className='cart-details-checkout'>CHECK OUT</button>
+                    </div>
                 </div>
             )
         }
