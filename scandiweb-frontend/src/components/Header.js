@@ -162,6 +162,7 @@ class Cart extends Component {
         this.showCartDetails = this.showCartDetails.bind(this)
         this.plusProductQuantity = this.plusProductQuantity.bind(this)
         this.minusProductQuantity = this.minusProductQuantity.bind(this)
+        this.changeAttribute = this.changeAttribute.bind(this)
     }
 
     componentDidUpdate(prevProps) {
@@ -228,10 +229,33 @@ class Cart extends Component {
         this.setState({ cart })
     }
 
+    changeAttribute(e) {
+        const index = e.target.getAttribute('index')
+        const attributeId = e.target.getAttribute('attributeid')
+        const value = e.target.getAttribute('attributevalue')
+        const cart = JSON.parse(JSON.stringify(this.state.cart))
+        const pickedAttributes = {}
+        pickedAttributes[attributeId] = value
+        if (this.state.cart[index].pickedAttributes) {
+            const isRepetedId = this.state.cart[index].pickedAttributes.some((attribute) => attributeId in attribute)
+            if (isRepetedId) {
+                const indexAtt = this.state.cart[index].pickedAttributes.findIndex((att) => att[attributeId])
+                cart[index].pickedAttributes[indexAtt] = pickedAttributes
+                this.setState({ cart })
+            } else {
+                cart[index].pickedAttributes = [...cart[index].pickedAttributes, pickedAttributes]
+                this.setState({ cart })
+            }
+        } else {
+            cart[index].pickedAttributes = [pickedAttributes]
+            this.setState({ cart })
+        }
+    }
+
     render() {
         return (
             <div className='cart-container'><CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity}
-                cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} plusProductQuantity={this.plusProductQuantity} />
+                cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} />
                 <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayTotalQuantity()}
             </div>)
     }
@@ -256,7 +280,7 @@ class CartDetails extends Component {
         return <div key={uuid()} className='cart-details-price'>{product.prices[indexOfPrice].currency.symbol}{product.prices[indexOfPrice].amount}</div>
     }
 
-    displayAttributes(product) {
+    displayAttributes(product, index) {
         const attributesToDisplay = product.attributes.map((attribute) => {
             return (
                 <div key={attribute.name} className='cart-details-attribute-pack'>
@@ -265,13 +289,15 @@ class CartDetails extends Component {
                         {attribute.items.map((att) => {
                             if (attribute.name === 'Color') {
                                 return (
-                                    <div key={att.value} className='cart-details-color-container' attributeid={attribute.id} attributevalue={att.value}>
+                                    <div key={att.value} className='cart-details-color-container'
+                                        attributeid={attribute.id} attributevalue={att.value} index={index} onClick={(e) => this.props.changeAttribute(e)}>
                                         <div key={att.value} style={{ backgroundColor: att.value }} className='cart-details-color-pick'>
                                         </div>
                                     </div>)
                             } else {
                                 return (
-                                    <div key={att.value} className='cart-details-attribute-value' attributeid={attribute.id}
+                                    <div key={att.value} className='cart-details-attribute-value'
+                                        attributeid={attribute.id} index={index} onClick={(e) => this.props.changeAttribute(e)}
                                         attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)
                             }
@@ -323,7 +349,7 @@ class CartDetails extends Component {
                             {this.displayName(product)}
                             {this.displayBrand(product)}
                             {this.displayPrice(product)}
-                            {this.displayAttributes(product)}
+                            {this.displayAttributes(product, index)}
                         </div>
                         <div className='cart-details-quantity'>
                             <div className='cart-details-count' index={index} onClick={(e) => this.props.plusProductQuantity(e)}>+</div>
