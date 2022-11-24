@@ -439,7 +439,7 @@ class CartDetails extends Component {
                     </div>
                     <div className='cart-details-buttons'>
                         <button className='cart-details-viewbag'>VIEW BAG</button>
-                        <button className='cart-details-checkout'>CHECK OUT</button>
+                        <button className='cart-details-checkout' onClick={() => alert('Thank you for testing :)')}>CHECK OUT</button>
                     </div>
                 </div>
             )

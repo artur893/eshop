@@ -233,6 +233,7 @@ header {
 }
 
 .cart-details-viewbag {
+    margin: 20px 0 0 0;
     border: solid 1px black;
     background-color: #FFFFFF;
     width: 48%;
@@ -251,6 +252,7 @@ header {
 }
 
 .cart-details-checkout {
+    margin: 20px 0 0 0;
     border: none;
     background-color: #5ECE7B;
     box-shadow: 0 0 4px 0px #5ECE7B;
