@@ -27,6 +27,7 @@ class App extends Component {
     this.setIsDetailCard = this.setIsDetailCard.bind(this)
     this.changeBagviewActive = this.changeBagviewActive.bind(this)
     this.addToCart = this.addToCart.bind(this)
+    this.sendCartData = this.sendCartData.bind(this)
   }
 
   componentDidMount() {
@@ -64,6 +65,10 @@ class App extends Component {
 
   changeBagviewActive(value) {
     this.setState({ isBagViewActive: value })
+  }
+
+  sendCartData(cartData) {
+    this.setState({ cart: cartData })
   }
 
   addToCart(id, attributesToCart) {
@@ -105,7 +110,7 @@ class App extends Component {
       <div className='container'>
         <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
           changeCategory={this.changeState} changeCurrency={this.changeCurrency} changeBagviewActive={this.changeBagviewActive}
-          hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} />
+          hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} />
         {this.displayCategoryName()}
         {this.displayProductsList()}
         {this.displayPDP()}
