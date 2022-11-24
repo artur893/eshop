@@ -134,6 +134,15 @@ class Pdp extends Component {
         this.props.addToCart(this.state.id, this.state.pickedAttributes)
     }
 
+    displayBuyButton() {
+        if (this.state.inStock) {
+            return (<button className='buy-button' onClick={this.addToCart}>ADD TO CART</button>)
+        } else {
+            return (<button className='buy-button out-of-stock'>OUT OF STOCK</button>)
+        }
+
+    }
+
     render() {
         if (this.state !== null) {
             return (
@@ -145,7 +154,7 @@ class Pdp extends Component {
                         <h3 className='product-brand'>{this.state.brand}</h3>
                         {this.displayAttibutes()}
                         {this.displayPrice()}
-                        <button className='buy-button' onClick={this.addToCart}>ADD TO CART</button>
+                        {this.displayBuyButton()}
                         <div className='description-container'>{this.displayDescription()}</div>
                     </div>
                 </div>)

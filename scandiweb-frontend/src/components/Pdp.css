@@ -138,6 +138,10 @@
     background-color: #47c769;
 }
 
+.buy-button.out-of-stock {
+    background-color: red;
+}
+
 .description-container {
     font-family: 'Roboto';
     font-weight: 400;
