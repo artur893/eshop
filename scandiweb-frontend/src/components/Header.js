@@ -53,6 +53,7 @@ class Menu extends Component {
         e.target.classList.add('active')
         this.props.changeCategory(e.target.textContent)
         this.props.hideProducts(false)
+        this.props.changeBagViewActive(false)
     }
 
     async componentDidMount() {
@@ -163,6 +164,7 @@ class Cart extends Component {
         this.plusProductQuantity = this.plusProductQuantity.bind(this)
         this.minusProductQuantity = this.minusProductQuantity.bind(this)
         this.changeAttribute = this.changeAttribute.bind(this)
+        this.closeCartDetails = this.closeCartDetails.bind(this)
     }
 
     componentDidUpdate(prevProps) {
@@ -173,6 +175,10 @@ class Cart extends Component {
 
     showCartDetails() {
         this.state.isDropped ? this.setState({ isDropped: false }) : this.setState({ isDropped: true })
+    }
+
+    closeCartDetails(){
+        this.setState({isDropped: false})
     }
 
     addToCart() {
@@ -264,8 +270,9 @@ class Cart extends Component {
     render() {
         return (
             <div className='cart-container'>
-                <CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity}
-                    cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} />
+                <CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity} changeBagViewActive={this.props.changeBagViewActive}
+                    cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} hideProducts={this.props.hideProducts} closeCartDetails={this.closeCartDetails}
+                    plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} />
                 <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayTotalQuantity()}
                 {this.overlay()}
             </div>)
@@ -438,7 +445,11 @@ class CartDetails extends Component {
                         <span className='cart-details-totalprice'>{this.props.pickedCurrency}{totalPrice.toFixed(2)}</span>
                     </div>
                     <div className='cart-details-buttons'>
-                        <button className='cart-details-viewbag'>VIEW BAG</button>
+                        <button className='cart-details-viewbag' onClick={() => {
+                            this.props.hideProducts(false)
+                            this.props.changeBagViewActive(true)
+                            this.props.closeCartDetails()
+                        }}>VIEW BAG</button>
                         <button className='cart-details-checkout' onClick={() => alert('Thank you for testing :)')}>CHECK OUT</button>
                     </div>
                 </div>
@@ -485,11 +496,12 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} />
+                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} changeBagViewActive={this.props.changeBagviewActive} />
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />
-                    <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} pickedCurrency={this.props.pickedCurrency} />
+                    <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} hideProducts={this.props.hideProducts}
+                        pickedCurrency={this.props.pickedCurrency} changeBagViewActive={this.props.changeBagviewActive} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>

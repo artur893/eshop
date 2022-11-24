@@ -4,6 +4,7 @@ import { Pdp } from './components/Pdp'
 import { Component } from 'react';
 import './App.css';
 import { client, Query } from '@tilework/opus'
+import { Bagview } from './components/Bagview';
 
 const endpointUrl = 'http://localhost:4000/'
 client.setEndpoint(endpointUrl)
@@ -17,12 +18,14 @@ class App extends Component {
       pickedCurrency: '$',
       pickedProduct: null,
       isDetailCardActive: false,
+      isBagViewActive: false,
       productsData: null
     }
     this.changeState = this.changeState.bind(this)
     this.changeCurrency = this.changeCurrency.bind(this)
     this.changeProduct = this.changeProduct.bind(this)
     this.setIsDetailCard = this.setIsDetailCard.bind(this)
+    this.changeBagviewActive = this.changeBagviewActive.bind(this)
     this.addToCart = this.addToCart.bind(this)
   }
 
@@ -59,6 +62,10 @@ class App extends Component {
     this.setState({ isDetailCardActive: value })
   }
 
+  changeBagviewActive(value) {
+    this.setState({ isBagViewActive: value })
+  }
+
   addToCart(id, attributesToCart) {
     this.setState({
       productToCart: {
@@ -69,13 +76,13 @@ class App extends Component {
   }
 
   displayCategoryName() {
-    if (this.state.isDetailCardActive === false) {
+    if (this.state.isDetailCardActive === false && this.state.isBagViewActive === false) {
       return <Category pickedCategory={this.state.pickedCategory} />
     }
   }
 
   displayProductsList() {
-    if (this.state.isDetailCardActive === false) {
+    if (this.state.isDetailCardActive === false && this.state.isBagViewActive === false) {
       return <Products pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} addToCart={this.addToCart}
         productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setIsDetailCard} />
     }
@@ -87,14 +94,22 @@ class App extends Component {
     }
   }
 
+  displayBagView() {
+    if (this.state.isBagViewActive === true) {
+      return <Bagview />
+    }
+  }
+
   render() {
     return (
       <div className='container'>
         <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
-          changeCategory={this.changeState} changeCurrency={this.changeCurrency} hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} />
+          changeCategory={this.changeState} changeCurrency={this.changeCurrency} changeBagviewActive={this.changeBagviewActive}
+          hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} />
         {this.displayCategoryName()}
         {this.displayProductsList()}
         {this.displayPDP()}
+        {this.displayBagView()}
       </div>
     )
   }
