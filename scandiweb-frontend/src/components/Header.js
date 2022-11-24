@@ -224,7 +224,6 @@ class Cart extends Component {
         cart[index].quantity -= 1
         if (cart[index].quantity === 0) {
             cart.splice(index, 1)
-            console.log(cart)
         }
         this.setState({ cart })
     }
@@ -252,19 +251,37 @@ class Cart extends Component {
         }
     }
 
+    overlay() {
+        const body = document.querySelector('body')
+        if (this.state.isDropped) {
+            body.classList.add('noscroll')
+            return (<div className='overlay'></div>)
+        } else {
+            body.classList.remove('noscroll')
+        }
+    }
+
     render() {
         return (
-            <div className='cart-container'><CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity}
-                cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} />
+            <div className='cart-container'>
+                <CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity}
+                    cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} />
                 <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayTotalQuantity()}
+                {this.overlay()}
             </div>)
     }
 }
 
 class CartDetails extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = { scrollValue: 0 }
+    }
 
     componentDidUpdate() {
         this.markPickedAttributes()
+        this.returnToScrollValue()
     }
 
     displayName(product) {
@@ -290,14 +307,20 @@ class CartDetails extends Component {
                             if (attribute.name === 'Color') {
                                 return (
                                     <div key={att.value} className='cart-details-color-container'
-                                        attributeid={attribute.id} attributevalue={att.value} index={index} onClick={(e) => this.props.changeAttribute(e)}>
+                                        attributeid={attribute.id} attributevalue={att.value} index={index} onClick={(e) => {
+                                            this.saveScrollValue()
+                                            this.props.changeAttribute(e)
+                                        }}>
                                         <div key={att.value} style={{ backgroundColor: att.value }} className='cart-details-color-pick'>
                                         </div>
                                     </div>)
                             } else {
                                 return (
                                     <div key={att.value} className='cart-details-attribute-value'
-                                        attributeid={attribute.id} index={index} onClick={(e) => this.props.changeAttribute(e)}
+                                        attributeid={attribute.id} index={index} onClick={(e) => {
+                                            this.saveScrollValue()
+                                            this.props.changeAttribute(e)
+                                        }}
                                         attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)
                             }
@@ -352,15 +375,34 @@ class CartDetails extends Component {
                             {this.displayAttributes(product, index)}
                         </div>
                         <div className='cart-details-quantity'>
-                            <div className='cart-details-count' index={index} onClick={(e) => this.props.plusProductQuantity(e)}>+</div>
+                            <div className='cart-details-count' index={index} onClick={(e) => {
+                                this.saveScrollValue()
+                                this.props.plusProductQuantity(e)
+                            }}>+</div>
                             <div className='cart-details-number'>{product.quantity}</div>
-                            <div className='cart-details-count' index={index} onClick={(e) => this.props.minusProductQuantity(e)}>-</div>
+                            <div className='cart-details-count' index={index} onClick={(e) => {
+                                this.saveScrollValue()
+                                this.props.minusProductQuantity(e)
+                            }}>-</div>
                         </div>
                         {this.displayPhoto(product)}
                     </div>
                 )
             })
             return cardsToDisplay
+        }
+    }
+
+    saveScrollValue() {
+        const cartDetails = document.querySelector('.cart-details')
+        const scrollValue = cartDetails.scrollTop
+        this.setState({ scrollValue: scrollValue })
+    }
+
+    returnToScrollValue() {
+        if (this.props.isDropped) {
+            const cartDetails = document.querySelector('.cart-details')
+            cartDetails.scrollTo(0, this.state.scrollValue)
         }
     }
 
