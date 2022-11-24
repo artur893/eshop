@@ -89,6 +89,9 @@
     left: 320px;
     bottom: 52px;
     transition: 200ms;
+}
+
+.cart-circle>svg {
     pointer-events: none;
 }
 
@@ -101,5 +104,5 @@
 }
 
 #out-of-stock:hover>.cart-circle {
-    background-color: #5ece7c00;
+    display: none;
 }
