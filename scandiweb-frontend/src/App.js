@@ -21,11 +21,11 @@ class App extends Component {
       isBagViewActive: false,
       productsData: null
     }
-    this.changeState = this.changeState.bind(this)
+    this.changeCategory = this.changeCategory.bind(this)
     this.changeCurrency = this.changeCurrency.bind(this)
     this.changeProduct = this.changeProduct.bind(this)
-    this.setIsDetailCard = this.setIsDetailCard.bind(this)
-    this.changeBagviewActive = this.changeBagviewActive.bind(this)
+    this.setDetailCardActive = this.setDetailCardActive.bind(this)
+    this.setBagviewActive = this.setBagviewActive.bind(this)
     this.addToCart = this.addToCart.bind(this)
     this.sendCartData = this.sendCartData.bind(this)
   }
@@ -46,7 +46,7 @@ class App extends Component {
     }
   }
 
-  changeState(newCategory) {
+  changeCategory(newCategory) {
     this.setState({ pickedCategory: newCategory })
   }
 
@@ -59,11 +59,11 @@ class App extends Component {
     this.setState({ pickedProduct: newProduct })
   }
 
-  setIsDetailCard(value) {
+  setDetailCardActive(value) {
     this.setState({ isDetailCardActive: value })
   }
 
-  changeBagviewActive(value) {
+  setBagviewActive(value) {
     this.setState({ isBagViewActive: value })
   }
 
@@ -80,6 +80,12 @@ class App extends Component {
     })
   }
 
+  displayHeader() {
+    return <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
+      changeCategory={this.changeCategory} changeCurrency={this.changeCurrency} setBagviewActive={this.setBagviewActive}
+      hideProducts={this.setDetailCardActive} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} />
+  }
+
   displayCategoryName() {
     if (this.state.isDetailCardActive === false && this.state.isBagViewActive === false) {
       return <Category pickedCategory={this.state.pickedCategory} />
@@ -89,7 +95,7 @@ class App extends Component {
   displayProductsList() {
     if (this.state.isDetailCardActive === false && this.state.isBagViewActive === false) {
       return <Products pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} addToCart={this.addToCart}
-        productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setIsDetailCard} />
+        productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setDetailCardActive} />
     }
   }
 
@@ -101,16 +107,14 @@ class App extends Component {
 
   displayBagView() {
     if (this.state.isBagViewActive === true) {
-      return <Bagview cart={this.state.cart} pickedCurrency={this.state.pickedCurrency}/>
+      return <Bagview cart={this.state.cart} pickedCurrency={this.state.pickedCurrency} />
     }
   }
 
   render() {
     return (
       <div className='container'>
-        <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
-          changeCategory={this.changeState} changeCurrency={this.changeCurrency} changeBagviewActive={this.changeBagviewActive}
-          hideProducts={this.setIsDetailCard} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} />
+        {this.displayHeader()}
         {this.displayCategoryName()}
         {this.displayProductsList()}
         {this.displayPDP()}
