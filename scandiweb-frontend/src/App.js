@@ -101,7 +101,7 @@ class App extends Component {
 
   displayBagView() {
     if (this.state.isBagViewActive === true) {
-      return <Bagview />
+      return <Bagview cart={this.state.cart} pickedCurrency={this.state.pickedCurrency}/>
     }
   }
 

@@ -177,8 +177,8 @@ class Cart extends Component {
         this.state.isDropped ? this.setState({ isDropped: false }) : this.setState({ isDropped: true })
     }
 
-    closeCartDetails(){
-        this.setState({isDropped: false})
+    closeCartDetails() {
+        this.setState({ isDropped: false })
     }
 
     addToCart() {
