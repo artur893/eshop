@@ -19,8 +19,7 @@ class Menu extends Component {
     }
 
     categoryDataRaw
-    categoryDataArr
-    filteredDataCategory
+    categoryValues
     dataToDisplay
 
     async getCategoriesData() {
@@ -38,13 +37,13 @@ class Menu extends Component {
     }
 
     displayCategories() {
-        this.dataToDisplay = this.filteredDataCategory.map((x) => {
+        this.dataToDisplay = this.categoryValues.map((x) => {
             return <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>
         })
     }
 
     formatCategoryData() {
-        this.categoryDataArr = Object.values(this.categoryDataRaw).map((x) => x.category)
+        this.categoryValues = this.filterDuplicates(Object.values(this.categoryDataRaw).map((x) => x.category))
     }
 
     pickCategory(e) {
@@ -59,7 +58,6 @@ class Menu extends Component {
     async componentDidMount() {
         await this.getCategoriesData()
         this.formatCategoryData()
-        this.filteredDataCategory = this.filterDuplicates(this.categoryDataArr)
         this.displayCategories()
     }
 
@@ -257,7 +255,7 @@ class Cart extends Component {
         }
     }
 
-    overlay() {
+    displayOverlay() {
         const body = document.querySelector('body')
         if (this.state.isDropped) {
             body.classList.add('noscroll')
@@ -274,7 +272,7 @@ class Cart extends Component {
                     cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} hideProducts={this.props.hideProducts} closeCartDetails={this.closeCartDetails}
                     plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} sendCartData={this.props.sendCartData} />
                 <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayTotalQuantity()}
-                {this.overlay()}
+                {this.displayOverlay()}
             </div>)
     }
 }
