@@ -48,6 +48,44 @@ class Pdp extends Component {
         elements.forEach((elem) => elem.classList.remove('active'))
     }
 
+    displayColorAttribues(attribute) {
+        const colorsToDisplay = attribute.items.map((att) => {
+            if (attribute.name === 'Color') {
+                return (
+                    <div key={att.value} className='color-container'
+                        onClick={(e) => {
+                            this.removeActiveClass('.color-container')
+                            e.target.parentElement.classList.add('active')
+                        }}>
+                        <div key={att.value} style={{ backgroundColor: att.value }} className='color-pick'
+                            attributeid={attribute.id} attributevalue={att.value} onClick={this.addAttributeToState}>
+                        </div>
+                    </div>)
+            } else {
+                return null
+            }
+        })
+        return colorsToDisplay
+    }
+
+    displayOtherAttributes(attribute) {
+        const attributesToDisplay = attribute.items.map((att) => {
+            if (attribute.name !== 'Color') {
+                return (
+                    <div key={att.value} className='attribute-value' attributeid={attribute.id}
+                        attributevalue={att.value} onClick={(e) => {
+                            this.addAttributeToState(e)
+                            this.removeActiveClass(`[attributeid="${attribute.id}"]`)
+                            e.target.classList.add('active')
+                        }}>{att.value}
+                    </div>)
+            } else {
+                return null
+            }
+        })
+        return attributesToDisplay
+    }
+
     displayAttibutes() {
         if (this.state.attributes) {
             const attributesToDisplay = this.state.attributes.map((attribute) => {
@@ -55,30 +93,8 @@ class Pdp extends Component {
                     <div key={attribute.name} className='attribute-pack'>
                         <div key={attribute.name} className='attribute-name'>{attribute.name.toUpperCase()}:</div>
                         <div key={`${attribute.name}-2`} className='attribute-values'>
-                            {attribute.items.map((att) => {
-                                if (attribute.name === 'Color') {
-                                    return (
-                                        <div key={att.value} className='color-container'
-                                            onClick={(e) => {
-                                                this.removeActiveClass('.color-container')
-                                                e.target.parentElement.classList.add('active')
-                                            }}>
-                                            <div key={att.value} style={{ backgroundColor: att.value }} className='color-pick'
-                                                attributeid={attribute.id} attributevalue={att.value} onClick={this.addAttributeToState}>
-                                            </div>
-                                        </div>)
-                                } else {
-                                    return (
-                                        <div key={att.value} className='attribute-value' attributeid={attribute.id}
-                                            attributevalue={att.value} onClick={(e) => {
-                                                this.addAttributeToState(e)
-                                                this.removeActiveClass(`[attributeid="${attribute.id}"]`)
-                                                e.target.classList.add('active')
-                                            }}>{att.value}
-                                        </div>)
-                                }
-                            })
-                            }
+                            {this.displayOtherAttributes(attribute)}
+                            {this.displayColorAttribues(attribute)}
                         </div>
                     </div>
                 )

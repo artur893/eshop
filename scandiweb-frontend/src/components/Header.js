@@ -497,12 +497,12 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} changeBagViewActive={this.props.changeBagviewActive} />
+                <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} changeBagViewActive={this.props.setBagviewActive} />
                 <Logo />
                 <div className='rightside-header'>
                     <Currency pickedCurrency={this.props.pickedCurrency} />
                     <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} hideProducts={this.props.hideProducts}
-                        pickedCurrency={this.props.pickedCurrency} changeBagViewActive={this.props.changeBagviewActive} sendCartData={this.props.sendCartData} />
+                        pickedCurrency={this.props.pickedCurrency} changeBagViewActive={this.props.setBagviewActive} sendCartData={this.props.sendCartData} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>
