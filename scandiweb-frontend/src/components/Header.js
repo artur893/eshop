@@ -165,9 +165,12 @@ class Cart extends Component {
         this.closeCartDetails = this.closeCartDetails.bind(this)
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.sendToCart !== this.props.sendToCart) {
             this.addToCart()
+        }
+        if (JSON.stringify(this.state.cart) !== JSON.stringify(prevState.cart)) {
+            this.props.sendCartData(this.state.cart)
         }
     }
 
@@ -444,7 +447,6 @@ class CartDetails extends Component {
                     </div>
                     <div className='cart-details-buttons'>
                         <button className='cart-details-viewbag' onClick={() => {
-                            this.props.sendCartData(this.props.cartDetails)
                             this.props.hideProducts(false)
                             this.props.changeBagViewActive(true)
                             this.props.closeCartDetails()

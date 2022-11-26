@@ -3,3 +3,144 @@
     font-weight: 700;
     margin: 50px;
 }
+
+.bagview-product-card {
+    margin: 0 50px 0 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: solid 1px #E5E5E5;
+}
+
+.bagview-product-card:last-of-type {
+    border-bottom: solid 1px #E5E5E5;
+}
+
+.bagview-right {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    margin: 20px 0;
+}
+
+.bagview-name {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 20px 0 10px 0;
+}
+
+.bagview-brand {
+    font-size: 30px;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+.bagview-price {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+.bagview-attribute-name {
+    margin-bottom: 10px;
+    font-family: 'Roboto Condensed';
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.bagview-attribute-pack {
+    margin: 20px 0
+}
+
+.bagview-attribute-value {
+    cursor: default;
+    margin: 0 0 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px black;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Source Sans Pro';
+    height: 45px;
+    width: 63px;
+}
+
+.bagview-attribute-value:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.bagview-attribute-value.actived {
+    background-color: black;
+    color: white;
+}
+
+.bagview-color-container {
+    border: solid 1px #FFFFFF;
+    margin: 0 0 0 10px;
+    height: 38px;
+    width: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bagview-color-container:hover {
+    border: solid 1px #5ECE7B
+}
+
+.bagview-color-container.actived {
+    border: solid 1px #5ECE7B;
+}
+
+.bagview-color-pick {
+    pointer-events: none;
+    height: 34px;
+    width: 34px;
+}
+
+.bagview-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bagview-photo>img {
+    width: 300px;
+}
+
+.bagview-quantity {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bagview-count {
+    cursor: default;
+    border: solid 1px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width: 45px;
+    font-size: 50px;
+    font-weight: 200;
+    font-family: 'Raleway';
+}
+
+
+.bagview-count:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.bagview-count:active {
+    color: white;
+    background-color: black;
+}
+
+.bagview-number {
+    text-align: center;
+    font-weight: 500;
+    font-size: 24px;
+}
