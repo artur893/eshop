@@ -13,6 +13,15 @@ class Bagview extends Component {
 }
 
 class ProductCard extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = { products: null }
+    }
+
+    componentDidMount() {
+        this.getPhotosData()
+    }
 
     displayName(product) {
         return <div key={uuid()} className='bagview-name'>{product.name}</div>
@@ -63,11 +72,56 @@ class ProductCard extends Component {
         return attributesToDisplay
     }
 
-    displayPhoto(product) {
-        console.log(product)
-        return (
-            <div className='bagview-photo'><img src={product.gallery[0]} alt={product.name}></img></div>
-        )
+    nextPhoto(index) {
+        let pickedIndex = this.state.products[index].pickedPhoto
+        if (this.state.products[index].photosLimit > this.state.products[index].pickedPhoto) {
+            pickedIndex = pickedIndex + 1
+            let state = JSON.parse(JSON.stringify(this.state.products))
+            state[index]['pickedPhoto'] = pickedIndex
+            this.setState({ products: state })
+        }
+    }
+
+    previousPhoto(index) {
+        let pickedIndex = this.state.products[index].pickedPhoto
+        if (this.state.products[index].pickedPhoto > 0) {
+            pickedIndex = pickedIndex - 1
+            let state = JSON.parse(JSON.stringify(this.state.products))
+            state[index]['pickedPhoto'] = pickedIndex
+            this.setState({ products: state })
+        }
+    }
+
+    displayPhoto(product, index) {
+        if (this.state.products) {
+            return (
+                <div className='bagview-photo'>
+                    <div className='bagview-arrow' id='left-arrow' index={index} onClick={() => this.previousPhoto(index)}>{'<'}</div>
+                    <div className='bagview-arrow' id='right-arrow' index={index} onClick={() => this.nextPhoto(index)}>{'>'}</div>
+                    <img src={product.gallery[this.state.products[index].pickedPhoto]} alt={product.name}></img>
+                </div>
+            )
+        } else {
+            <div className='bagview-photo'>
+                <div className='bagview-arrow' id='left-arrow' index={index}>{'<'}</div>
+                <div className='bagview-arrow' id='right-arrow' index={index}>{'>'}</div>
+                <img src={product.gallery[0]} alt={product.name}></img>
+            </div>
+        }
+
+    }
+
+    getPhotosData() {
+        if (this.props.cart) {
+            const products = []
+            this.props.cart.forEach((product) => {
+                products.push({
+                    pickedPhoto: 0,
+                    photosLimit: product.gallery.length - 1
+                })
+            })
+            this.setState({ products: products })
+        }
     }
 
     displayCards() {
@@ -89,7 +143,7 @@ class ProductCard extends Component {
                                 <div className='bagview-number'>{product.quantity}</div>
                                 <div className='bagview-count' index={index}>-</div>
                             </div>
-                            {this.displayPhoto(product)}
+                            {this.displayPhoto(product, index)}
                         </div>
                     </div>
                 )

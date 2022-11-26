@@ -102,6 +102,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .bagview-photo>img {
@@ -143,4 +144,35 @@
     text-align: center;
     font-weight: 500;
     font-size: 24px;
+}
+
+.bagview-arrow {
+    cursor: default;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2px;
+    font-size: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 24px;
+    height: 22px;
+    bottom: 20px;
+}
+
+.bagview-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.bagview-arrow:active {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#left-arrow {
+    right: 80px;
+}
+
+#right-arrow {
+    right: 50px;
 }
