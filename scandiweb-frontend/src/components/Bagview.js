@@ -23,6 +23,30 @@ class ProductCard extends Component {
         this.getPhotosData()
     }
 
+    componentDidUpdate() {
+        this.markPickedAttributes()
+    }
+
+    markPickedAttributes() {
+        if (this.props.cart) {
+            for (let i = 0; i < this.props.cart.length; i++) {
+                if (this.props.cart[i].pickedAttributes) {
+                    this.props.cart[i].pickedAttributes.forEach((att) => {
+                        const key = Object.keys(att)
+                        const value = Object.values(att)
+                        const productCard = document.querySelectorAll('.bagview-product-card')
+                        const attributeContainer = productCard[i].querySelectorAll(`[attributeid="${key}"]`)
+                        attributeContainer.forEach((container) => {
+                            if (container.getAttribute('attributevalue') === value[0]) {
+                                container.classList.add('actived')
+                            }
+                        })
+                    })
+                }
+            }
+        }
+    }
+
     displayName(product) {
         return <div key={uuid()} className='bagview-name'>{product.name}</div>
     }
@@ -46,20 +70,14 @@ class ProductCard extends Component {
                             if (attribute.name === 'Color') {
                                 return (
                                     <div key={att.value} className='bagview-color-container'
-                                        attributeid={attribute.id} attributevalue={att.value} index={index} onClick={(e) => {
-                                            this.saveScrollValue()
-                                            this.props.changeAttribute(e)
-                                        }}>
+                                        attributeid={attribute.id} attributevalue={att.value} index={index}>
                                         <div key={att.value} style={{ backgroundColor: att.value }} className='bagview-color-pick'>
                                         </div>
                                     </div>)
                             } else {
                                 return (
                                     <div key={att.value} className='bagview-attribute-value'
-                                        attributeid={attribute.id} index={index} onClick={(e) => {
-                                            this.saveScrollValue()
-                                            this.props.changeAttribute(e)
-                                        }}
+                                        attributeid={attribute.id} index={index}
                                         attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)
                             }
@@ -92,19 +110,28 @@ class ProductCard extends Component {
         }
     }
 
+    displayArrows(product, index) {
+        if (product.gallery.length > 1) {
+            return (
+                <>
+                    <div className='bagview-arrow' id='left-arrow' index={index} onClick={() => this.previousPhoto(index)}>{'<'}</div>
+                    <div className='bagview-arrow' id='right-arrow' index={index} onClick={() => this.nextPhoto(index)}>{'>'}</div>
+                </>
+            )
+        }
+    }
+
     displayPhoto(product, index) {
         if (this.state.products) {
             return (
                 <div className='bagview-photo'>
-                    <div className='bagview-arrow' id='left-arrow' index={index} onClick={() => this.previousPhoto(index)}>{'<'}</div>
-                    <div className='bagview-arrow' id='right-arrow' index={index} onClick={() => this.nextPhoto(index)}>{'>'}</div>
+                    {this.displayArrows(product, index)}
                     <img src={product.gallery[this.state.products[index].pickedPhoto]} alt={product.name}></img>
                 </div>
             )
         } else {
             <div className='bagview-photo'>
-                <div className='bagview-arrow' id='left-arrow' index={index}>{'<'}</div>
-                <div className='bagview-arrow' id='right-arrow' index={index}>{'>'}</div>
+                {this.displayArrows(product, index)}
                 <img src={product.gallery[0]} alt={product.name}></img>
             </div>
         }
@@ -141,7 +168,7 @@ class ProductCard extends Component {
                             <div className='bagview-quantity'>
                                 <div className='bagview-count' index={index}>+</div>
                                 <div className='bagview-number'>{product.quantity}</div>
-                                <div className='bagview-count' index={index}>-</div>
+                                <div className='bagview-count' index={index} id='bagview-minus-btn'>-</div>
                             </div>
                             {this.displayPhoto(product, index)}
                         </div>

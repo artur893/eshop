@@ -140,6 +140,12 @@
     background-color: black;
 }
 
+#bagview-minus-btn {
+    padding-bottom: 5px;
+    width: 45px;
+    height: 40px;
+}
+
 .bagview-number {
     text-align: center;
     font-weight: 500;
