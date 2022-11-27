@@ -182,3 +182,47 @@
 #right-arrow {
     right: 50px;
 }
+
+.summary-pack {
+    display: flex;
+    margin: 16px 50px;
+}
+
+.summary-tax-text,
+.summary-quantity-text,
+.summary-price-text {
+    font-size: 24px;
+    font-weight: 400;
+    width: 110px;
+}
+
+.summary-tax-value,
+.summary-price-value,
+.summary-quantity-value {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.summary-price-text {
+    font-weight: 500;
+}
+
+.summary-order-btn {
+    margin: 0 0 0 50px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 0 4px 0px #5ECE7B;
+    background-color: #5ECE7B;
+    width: 279px;
+    height: 43px;
+}
+
+.summary-order-btn:hover {
+    box-shadow: none
+}
+
+.summary-order-btn:active {
+    background-color: #47c769;
+}

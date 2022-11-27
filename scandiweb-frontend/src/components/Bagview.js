@@ -8,6 +8,7 @@ class Bagview extends Component {
             <>
                 <div className='bagview-title'>CART</div>
                 <ProductCard cart={this.props.cart} pickedCurrency={this.props.pickedCurrency} cartComponent={this.props.cartComponent} />
+                <Summary cart={this.props.cart} pickedCurrency={this.props.pickedCurrency} />
             </>)
     }
 }
@@ -160,7 +161,7 @@ class ProductCard extends Component {
         const indexOfMissing = prevProps.cart.findIndex(product => JSON.stringify(product) === JSON.stringify(missingProduct[0]))
         const state = JSON.parse(JSON.stringify(this.state.products))
         state.splice(indexOfMissing, 1)
-        this.setState({products: state})
+        this.setState({ products: state })
     }
 
     displayCards() {
@@ -191,45 +192,56 @@ class ProductCard extends Component {
         }
     }
 
-    // displayProductCards() {
-    //     if (this.props.cartDetails) {
-    //         let index = -1
-    //         const cardsToDisplay = this.props.cartDetails.map((product) => {
-    //             index = index + 1
-    //             return (
-    //                 <div key={uuid()} className='cart-details-card'>
-    //                     <div className='cart-details-left'>
-    //                         {this.displayName(product)}
-    //                         {this.displayBrand(product)}
-    //                         {this.displayPrice(product)}
-    //                         {this.displayAttributes(product, index)}
-    //                     </div>
-    //                     <div className='cart-details-quantity'>
-    //                         <div className='cart-details-count' index={index} onClick={(e) => {
-    //                             this.saveScrollValue()
-    //                             this.props.plusProductQuantity(e)
-    //                         }}>+</div>
-    //                         <div className='cart-details-number'>{product.quantity}</div>
-    //                         <div className='cart-details-count' index={index} onClick={(e) => {
-    //                             this.saveScrollValue()
-    //                             this.props.minusProductQuantity(e)
-    //                         }}>-</div>
-    //                     </div>
-    //                     {this.displayPhoto(product)}
-    //                 </div>
-    //             )
-    //         })
-    //         return cardsToDisplay
-    //     }
-    // }
-
     render() {
         return <div className='bagview-cards'>{this.displayCards()}</div>
     }
 }
 
 class Summary extends Component {
+    displayTotalPrice() {
+        let totalPrice = 0
+        this.props.cart.forEach((product) => {
+            const indexOfPrice = product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+            totalPrice = totalPrice + (product.prices[indexOfPrice].amount * product.quantity)
+        })
+        return totalPrice.toFixed(2)
+    }
 
+    displayTotalQuantity() {
+        let totalQuantity = 0
+        this.props.cart.forEach((product) => {
+            totalQuantity = totalQuantity + product.quantity
+        })
+        return totalQuantity
+    }
+
+    displayTaxValue() {
+        const totalPrice = this.displayTotalPrice()
+        const tax = totalPrice * 0.21
+        return tax.toFixed(2)
+    }
+
+    render() {
+        if (this.props.cart.length > 0) {
+            return (
+                <>
+                    <div className='summary-pack'>
+                        <div className='summary-tax-text'>Tax 21%:</div>
+                        <div className='summary-tax-value'>{this.props.pickedCurrency}{this.displayTaxValue()}</div>
+                    </div>
+                    <div className='summary-pack'>
+                        <div className='summary-quantity-text'>Quantity:</div>
+                        <div className='summary-quantity-value'>{this.displayTotalQuantity()}</div>
+                    </div>
+                    <div className='summary-pack'>
+                        <div className='summary-price-text'>Total:</div>
+                        <div className='summary-price-value'>{this.props.pickedCurrency}{this.displayTotalPrice()}</div>
+                    </div>
+                    <button className='summary-order-btn' onClick={() => alert('Thank you for testing :)')}>ORDER</button>
+                </>
+            )
+        }
+    }
 }
 
 export { Bagview }
