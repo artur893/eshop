@@ -22,6 +22,7 @@ class ProductCard extends Component {
 
     componentDidMount() {
         this.getPhotosData()
+        this.loadImages()
     }
 
     componentDidUpdate(prevProps) {
@@ -130,7 +131,7 @@ class ProductCard extends Component {
             return (
                 <div className='bagview-photo'>
                     {this.displayArrows(product, index)}
-                    <img src={product.gallery[this.state.products[index].pickedPhoto]} alt={product.name}></img>
+                    {this.loadImages(product, index)}
                 </div>
             )
         } else {
@@ -140,6 +141,18 @@ class ProductCard extends Component {
             </div>
         }
 
+    }
+
+    loadImages(product, index) {
+        const gallery = []
+        if (this.state.products && this.props.cart) {
+            this.props.cart[index].gallery.forEach((photo) => {
+                const img = new Image(300)
+                img.src = photo
+                gallery.push(img)
+            })
+            return <img src={gallery[this.state.products[index].pickedPhoto].src} alt={product.name}></img>
+        }
     }
 
     getPhotosData() {
