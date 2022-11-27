@@ -1,7 +1,7 @@
 import { Header } from './components/Header'
 import { Category, Products } from './components/Products'
 import { Pdp } from './components/Pdp'
-import { Component } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { client, Query } from '@tilework/opus'
 import { Bagview } from './components/Bagview';
@@ -12,6 +12,8 @@ client.setEndpoint(endpointUrl)
 class App extends Component {
   constructor(props) {
     super(props)
+
+    this.header = React.createRef();
 
     this.state = {
       pickedCategory: 'TECH',
@@ -83,7 +85,7 @@ class App extends Component {
   displayHeader() {
     return <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
       changeCategory={this.changeCategory} changeCurrency={this.changeCurrency} setBagviewActive={this.setBagviewActive}
-      hideProducts={this.setDetailCardActive} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} />
+      hideProducts={this.setDetailCardActive} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} ref={this.header} />
   }
 
   displayCategoryName() {
@@ -107,7 +109,7 @@ class App extends Component {
 
   displayBagView() {
     if (this.state.isBagViewActive === true) {
-      return <Bagview cart={this.state.cart} pickedCurrency={this.state.pickedCurrency} />
+      return <Bagview cart={this.state.cart} pickedCurrency={this.state.pickedCurrency} cartComponent={this.header.current.cartComponent} />
     }
   }
 

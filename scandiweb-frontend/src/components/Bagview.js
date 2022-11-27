@@ -7,7 +7,7 @@ class Bagview extends Component {
         return (
             <>
                 <div className='bagview-title'>CART</div>
-                <ProductCard cart={this.props.cart} pickedCurrency={this.props.pickedCurrency} />
+                <ProductCard cart={this.props.cart} pickedCurrency={this.props.pickedCurrency} cartComponent={this.props.cartComponent} />
             </>)
     }
 }
@@ -23,7 +23,10 @@ class ProductCard extends Component {
         this.getPhotosData()
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        if (prevProps.cart.length !== this.props.cart.length) {
+            this.updatePhotosData(prevProps)
+        }
         this.markPickedAttributes()
     }
 
@@ -69,14 +72,14 @@ class ProductCard extends Component {
                         {attribute.items.map((att) => {
                             if (attribute.name === 'Color') {
                                 return (
-                                    <div key={att.value} className='bagview-color-container'
+                                    <div key={att.value} className='bagview-color-container' onClick={(e) => this.props.cartComponent.current.changeAttribute(e)}
                                         attributeid={attribute.id} attributevalue={att.value} index={index}>
                                         <div key={att.value} style={{ backgroundColor: att.value }} className='bagview-color-pick'>
                                         </div>
                                     </div>)
                             } else {
                                 return (
-                                    <div key={att.value} className='bagview-attribute-value'
+                                    <div key={att.value} className='bagview-attribute-value' onClick={(e) => this.props.cartComponent.current.changeAttribute(e)}
                                         attributeid={attribute.id} index={index}
                                         attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)
@@ -143,12 +146,21 @@ class ProductCard extends Component {
             const products = []
             this.props.cart.forEach((product) => {
                 products.push({
+                    id: product.id,
                     pickedPhoto: 0,
                     photosLimit: product.gallery.length - 1
                 })
             })
             this.setState({ products: products })
         }
+    }
+
+    updatePhotosData(prevProps) {
+        const missingProduct = prevProps.cart.filter(product => !JSON.stringify(this.props.cart).includes(JSON.stringify(product)));
+        const indexOfMissing = prevProps.cart.findIndex(product => JSON.stringify(product) === JSON.stringify(missingProduct[0]))
+        const state = JSON.parse(JSON.stringify(this.state.products))
+        state.splice(indexOfMissing, 1)
+        this.setState({products: state})
     }
 
     displayCards() {
@@ -166,9 +178,9 @@ class ProductCard extends Component {
                         </div>
                         <div className='bagview-right' key={uuid()}>
                             <div className='bagview-quantity'>
-                                <div className='bagview-count' index={index}>+</div>
+                                <div className='bagview-count' index={index} onClick={(e) => this.props.cartComponent.current.plusProductQuantity(e)}>+</div>
                                 <div className='bagview-number'>{product.quantity}</div>
-                                <div className='bagview-count' index={index} id='bagview-minus-btn'>-</div>
+                                <div className='bagview-count' index={index} onClick={(e) => this.props.cartComponent.current.minusProductQuantity(e)} id='bagview-minus-btn'>-</div>
                             </div>
                             {this.displayPhoto(product, index)}
                         </div>
