@@ -17,9 +17,9 @@ class Pdp extends Component {
         this.getPickedProductData()
     }
 
-    async getPickedProductData() {
+    getPickedProductData() {
         const indexOfProduct = this.props.productsData.findIndex((product) => product.name === this.props.pickedProduct)
-        await this.setState(this.props.productsData[indexOfProduct])
+        this.setState(this.props.productsData[indexOfProduct])
     }
 
     displayGalleryList() {
@@ -147,7 +147,11 @@ class Pdp extends Component {
     }
 
     addToCart() {
-        this.props.addToCart(this.state.id, this.state.pickedAttributes)
+        if (this.state.pickedAttributes) {
+            if (this.state.attributes.length === this.state.pickedAttributes.length) {
+                this.props.addToCart(this.state.id, this.state.pickedAttributes)
+            }
+        }
     }
 
     displayBuyButton() {
