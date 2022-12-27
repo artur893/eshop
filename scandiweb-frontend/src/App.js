@@ -115,7 +115,10 @@ class App extends Component {
 
   render() {
     return (
-      <div className='viewport' onClick={() => {this.header.current.cartComponent.current.closeCartDetails()}}>
+      <div className='viewport' onClick={() => {
+        this.header.current.cartComponent.current.closeCartDetails()
+        this.header.current.currencyComponent.current.closeDropMenu()
+      }}>
         <div className='container'>
           {this.displayHeader()}
           {this.displayCategoryName()}

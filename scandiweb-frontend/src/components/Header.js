@@ -89,10 +89,17 @@ class Currency extends Component {
         this.dropMenu = this.dropMenu.bind(this)
     }
 
-    dropMenu() {
+    dropMenu(e) {
+        e.stopPropagation()
         const dropdownMenuElement = document.querySelector('.dropdown-menu')
         dropdownMenuElement.classList.toggle('active')
         this.state.isDropped === false ? this.setState({ isDropped: true }) : this.setState({ isDropped: false })
+    }
+
+    closeDropMenu() {
+        const dropdownMenuElement = document.querySelector('.dropdown-menu')
+        dropdownMenuElement.classList.remove('active')
+        this.setState({ isDropped: false })
     }
 
     changeDropArrow() {
@@ -106,8 +113,14 @@ class Currency extends Component {
     render() {
         return (
             <div className='currency-field'>
-                <div onClick={this.dropMenu}>{this.props.pickedCurrency}</div>
-                <img src={this.changeDropArrow()} alt='dropdown button' onClick={this.dropMenu}></img>
+                <div onClick={(e) => {
+                    this.dropMenu(e)
+                    this.props.closeCart.closeCartDetails()
+                }}>{this.props.pickedCurrency}</div>
+                <img src={this.changeDropArrow()} alt='dropdown button' onClick={(e) => {
+                    this.dropMenu(e)
+                    this.props.closeCart.closeCartDetails()
+                }}></img>
             </div>
         )
     }
@@ -277,7 +290,10 @@ class Cart extends Component {
                 <CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity} changeBagViewActive={this.props.changeBagViewActive}
                     cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} hideProducts={this.props.hideProducts} closeCartDetails={this.closeCartDetails}
                     plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} sendCartData={this.props.sendCartData} />
-                <img src={cartImg} alt='cart button' onClick={(e) => { this.showCartDetails(e) }}></img>{this.displayTotalQuantity()}
+                <img src={cartImg} alt='cart button' onClick={(e) => {
+                    this.showCartDetails(e)
+                    this.props.closeCurrencies.closeDropMenu()
+                }}></img>{this.displayTotalQuantity()}
                 {this.displayOverlay()}
             </div>)
     }
@@ -476,6 +492,7 @@ class Header extends Component {
             }
         }
         this.cartComponent = React.createRef();
+        this.currencyComponent = React.createRef();
     }
 
     async getCurrencyData() {
@@ -500,13 +517,17 @@ class Header extends Component {
 
     render() {
         return (
-            <header onClick={() => { this.cartComponent.current.closeCartDetails() }}>
+            <header onClick={() => {
+                this.cartComponent.current.closeCartDetails()
+                this.currencyComponent.current.closeDropMenu()
+            }}>
                 <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} changeBagViewActive={this.props.setBagviewActive} />
                 <Logo />
                 <div className='rightside-header'>
-                    <Currency pickedCurrency={this.props.pickedCurrency} />
+                    <Currency pickedCurrency={this.props.pickedCurrency} ref={this.currencyComponent} closeCart={this.cartComponent.current} />
                     <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} hideProducts={this.props.hideProducts} ref={this.cartComponent}
-                        pickedCurrency={this.props.pickedCurrency} changeBagViewActive={this.props.setBagviewActive} sendCartData={this.props.sendCartData} />
+                        pickedCurrency={this.props.pickedCurrency} changeBagViewActive={this.props.setBagviewActive} sendCartData={this.props.sendCartData}
+                        closeCurrencies={this.currencyComponent.current} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>
