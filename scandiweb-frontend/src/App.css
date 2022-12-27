@@ -1,4 +1,9 @@
-body {
+.viewport {
+    min-width: 1vw;
+    min-height: 1vh;
+}
+
+.container {
     width: 1440px;
     margin: auto;
 }
