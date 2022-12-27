@@ -160,13 +160,21 @@ class Pdp extends Component {
         } else {
             return (<button className='buy-button out-of-stock'>OUT OF STOCK</button>)
         }
+    }
 
+    addClassName() {
+        if (!this.state.inStock) {
+            return 'pdp-container out-of-stock'
+        } else {
+            return 'pdp-container'
+        }
     }
 
     render() {
         if (this.state !== null) {
             return (
-                <div className='pdp-container'>
+                <div className={this.addClassName()}>
+                    <div className='pdp-out-of-stock'>OUT OF STOCK</div>
                     <div className="small-images">{this.displayGalleryList()}</div>
                     <div className='main-image-container'>{this.displayMainPhoto()}</div>
                     <div className='details'>
