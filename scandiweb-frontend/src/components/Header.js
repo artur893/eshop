@@ -175,7 +175,8 @@ class Cart extends Component {
         }
     }
 
-    showCartDetails() {
+    showCartDetails(e) {
+        e.stopPropagation()
         this.state.isDropped ? this.setState({ isDropped: false }) : this.setState({ isDropped: true })
     }
 
@@ -264,7 +265,7 @@ class Cart extends Component {
         const body = document.querySelector('body')
         if (this.state.isDropped) {
             body.classList.add('noscroll')
-            return (<div className='overlay'></div>)
+            return (<div className='overlay' onClick={() => { this.closeCartDetails() }}></div>)
         } else {
             body.classList.remove('noscroll')
         }
@@ -276,7 +277,7 @@ class Cart extends Component {
                 <CartDetails isDropped={this.state.isDropped} minusProductQuantity={this.minusProductQuantity} changeBagViewActive={this.props.changeBagViewActive}
                     cartDetails={this.state.cart} pickedCurrency={this.props.pickedCurrency} hideProducts={this.props.hideProducts} closeCartDetails={this.closeCartDetails}
                     plusProductQuantity={this.plusProductQuantity} changeAttribute={this.changeAttribute} sendCartData={this.props.sendCartData} />
-                <img src={cartImg} alt='cart button' onClick={this.showCartDetails}></img>{this.displayTotalQuantity()}
+                <img src={cartImg} alt='cart button' onClick={(e) => { this.showCartDetails(e) }}></img>{this.displayTotalQuantity()}
                 {this.displayOverlay()}
             </div>)
     }
@@ -426,7 +427,7 @@ class CartDetails extends Component {
     displayCartDetails() {
         if (this.props.isDropped) {
             return (
-                <div key={uuid()} className='cart-details'>
+                <div key={uuid()} className='cart-details' onClick={(e) => e.stopPropagation()}>
                     <div key={uuid()} className='cart-details-title'>My Bag<span className='cart-details-span'>, {this.totalQuantity()} items</span></div>
                     <div className='cart-details-attributes'>{this.displayProductCards()}</div>
                     {this.displaySummary()}
@@ -499,7 +500,7 @@ class Header extends Component {
 
     render() {
         return (
-            <header>
+            <header onClick={() => { this.cartComponent.current.closeCartDetails() }}>
                 <Menu changeCategory={this.props.changeCategory} hideProducts={this.props.hideProducts} changeBagViewActive={this.props.setBagviewActive} />
                 <Logo />
                 <div className='rightside-header'>
