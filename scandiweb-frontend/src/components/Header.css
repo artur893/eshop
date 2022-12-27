@@ -112,10 +112,6 @@ header {
     width: 32px;
 }
 
-.cart-details-attribute-value:hover {
-    background-color: rgb(235, 235, 235);
-}
-
 .cart-details-attribute-value.actived {
     background-color: black;
     color: white;
@@ -140,10 +136,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.cart-details-color-container:hover {
-    border: solid 1px #5ECE7B
 }
 
 .cart-details-color-container.actived {

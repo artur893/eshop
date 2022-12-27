@@ -65,10 +65,6 @@
     width: 63px;
 }
 
-.bagview-attribute-value:hover {
-    background-color: rgb(235, 235, 235);
-}
-
 .bagview-attribute-value.actived {
     background-color: black;
     color: white;
@@ -82,10 +78,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.bagview-color-container:hover {
-    border: solid 1px #5ECE7B
 }
 
 .bagview-color-container.actived {

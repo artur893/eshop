@@ -336,7 +336,6 @@ class CartDetails extends Component {
                                     <div key={att.value} className='cart-details-color-container'
                                         attributeid={attribute.id} attributevalue={att.value} index={index} onClick={(e) => {
                                             this.saveScrollValue()
-                                            this.props.changeAttribute(e)
                                         }}>
                                         <div key={att.value} style={{ backgroundColor: att.value }} className='cart-details-color-pick'>
                                         </div>
@@ -346,7 +345,6 @@ class CartDetails extends Component {
                                     <div key={att.value} className='cart-details-attribute-value'
                                         attributeid={attribute.id} index={index} onClick={(e) => {
                                             this.saveScrollValue()
-                                            this.props.changeAttribute(e)
                                         }}
                                         attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)

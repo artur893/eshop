@@ -74,14 +74,14 @@ class ProductCard extends Component {
                         {attribute.items.map((att) => {
                             if (attribute.name === 'Color') {
                                 return (
-                                    <div key={att.value} className='bagview-color-container' onClick={(e) => this.props.cartComponent.current.changeAttribute(e)}
+                                    <div key={att.value} className='bagview-color-container'
                                         attributeid={attribute.id} attributevalue={att.value} index={index}>
                                         <div key={att.value} style={{ backgroundColor: att.value }} className='bagview-color-pick'>
                                         </div>
                                     </div>)
                             } else {
                                 return (
-                                    <div key={att.value} className='bagview-attribute-value' onClick={(e) => this.props.cartComponent.current.changeAttribute(e)}
+                                    <div key={att.value} className='bagview-attribute-value'
                                         attributeid={attribute.id} index={index}
                                         attributevalue={att.value}>{att.value.substring(0, 4)}
                                     </div>)
