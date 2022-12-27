@@ -42,7 +42,7 @@ class Products extends Component {
     }
 
     displayProductName(product) {
-        return <p className='product-name'>{product.name}</p>
+        return <p className='product-name'>{`${product.brand} ${product.name}`}</p>
     }
 
     displayProductPrice(product) {
