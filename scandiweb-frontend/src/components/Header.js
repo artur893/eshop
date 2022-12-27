@@ -64,6 +64,7 @@ class Menu extends Component {
     render() {
         return (
             <ul className='menu'>
+                <li key='allProducts' className={'menu-element'} onClick={this.pickCategory}>ALL</li>
                 {this.dataToDisplay}
             </ul>
         )

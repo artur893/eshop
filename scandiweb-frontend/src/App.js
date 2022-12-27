@@ -16,7 +16,7 @@ class App extends Component {
     this.header = React.createRef();
 
     this.state = {
-      pickedCategory: 'TECH',
+      pickedCategory: 'ALL',
       pickedCurrency: '$',
       pickedProduct: null,
       isDetailCardActive: false,

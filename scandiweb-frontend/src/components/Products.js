@@ -68,6 +68,20 @@ class Products extends Component {
     populateCards(category) {
         if (this.props.productsData) {
             const productCards = this.props.productsData.map((product) => {
+                if (category === 'ALL') {
+                    return (
+                        <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name}
+                            onClick={this.pickProductDetails} productid={product.name} productname={product.id}>
+                            {this.displayOutOfStock(product)}
+                            {this.displayProductImage(product)}
+                            {this.displayCartBuyCirlce()}
+                            <div className="product-info">
+                                {this.displayProductName(product)}
+                                {this.displayProductPrice(product)}
+                            </div>
+                        </div>
+                    )
+                }
                 if (product.category.toUpperCase() === category) {
                     return (
                         <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name}
