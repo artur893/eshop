@@ -62,7 +62,7 @@ class ProductCard extends Component {
 
     displayPrice(product) {
         const indexOfPrice = product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
-        return <div key={uuid()} className='bagview-price'>{product.prices[indexOfPrice].currency.symbol}{product.prices[indexOfPrice].amount}</div>
+        return <div key={uuid()} className='bagview-price'>{product.prices[indexOfPrice].currency.symbol}{product.prices[indexOfPrice].amount.toFixed(2)}</div>
     }
 
     displayAttributes(product, index) {

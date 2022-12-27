@@ -88,6 +88,7 @@
     left: 320px;
     bottom: 52px;
     transition: 200ms;
+    pointer-events: none;
 }
 
 .cart-circle>svg {

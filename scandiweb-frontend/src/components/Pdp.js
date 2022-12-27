@@ -133,7 +133,7 @@ class Pdp extends Component {
             return (
                 <div className='price-container'>
                     <div className='attribute-name'>PRICE:</div>
-                    <div className='price-value'>{this.state.prices[indexOfProduct].currency.symbol}{this.state.prices[indexOfProduct].amount}</div>
+                    <div className='price-value'>{this.state.prices[indexOfProduct].currency.symbol}{this.state.prices[indexOfProduct].amount.toFixed(2)}</div>
                 </div>
             )
         }
