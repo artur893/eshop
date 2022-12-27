@@ -103,12 +103,24 @@ class ProductCard extends Component {
             state[index]['pickedPhoto'] = pickedIndex
             this.setState({ products: state })
         }
+        if (this.state.products[index].photosLimit === this.state.products[index].pickedPhoto) {
+            pickedIndex = 0
+            let state = JSON.parse(JSON.stringify(this.state.products))
+            state[index]['pickedPhoto'] = pickedIndex
+            this.setState({ products: state })
+        }
     }
 
     previousPhoto(index) {
         let pickedIndex = this.state.products[index].pickedPhoto
         if (this.state.products[index].pickedPhoto > 0) {
             pickedIndex = pickedIndex - 1
+            let state = JSON.parse(JSON.stringify(this.state.products))
+            state[index]['pickedPhoto'] = pickedIndex
+            this.setState({ products: state })
+        }
+        if (this.state.products[index].pickedPhoto === 0) {
+            pickedIndex = this.state.products[index].photosLimit
             let state = JSON.parse(JSON.stringify(this.state.products))
             state[index]['pickedPhoto'] = pickedIndex
             this.setState({ products: state })
