@@ -33,9 +33,17 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const currency = localStorage.getItem('currency')
+    if (currency) {
+      this.setState({ pickedCurrency: currency })
+    }
     if (this.state.productsData === null) {
       this.getProductsData()
     }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('currency', this.state.pickedCurrency)
   }
 
   async getProductsData() {

@@ -179,7 +179,15 @@ class Cart extends Component {
         this.closeCartDetails = this.closeCartDetails.bind(this)
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidMount() {
+        const cart = localStorage.getItem('cart')
+        if (cart) {
+            this.setState({ cart: JSON.parse(cart) })
+        }
+    }
+
+    async componentDidUpdate(prevProps, prevState) {
+        localStorage.setItem('cart', JSON.stringify(this.state.cart))
         if (prevProps.sendToCart !== this.props.sendToCart) {
             this.addToCart()
         }
