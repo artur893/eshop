@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Pdp.css';
 import { client, Query } from '@tilework/opus'
 
+const parse = require('html-react-parser');
+
 const endpointUrl = 'http://localhost:4000/'
 client.setEndpoint(endpointUrl)
 
@@ -22,10 +24,6 @@ class Pdp extends Component {
 
     componentDidMount() {
         this.getPickedProductData()
-    }
-
-    componentDidUpdate() {
-        this.displayDescription()
     }
 
     async getPickedProductData() {
@@ -157,13 +155,6 @@ class Pdp extends Component {
         }
     }
 
-    displayDescription() {
-        if (this.state.product?.description) {
-            const container = document.querySelector('.description-container')
-            container.innerHTML = this.state.product.description
-        }
-    }
-
     addToCart() {
         if (this.state.pickedAttributes) {
             if (this.state.product.attributes.length === this.state.pickedAttributes.length) {
@@ -207,7 +198,7 @@ class Pdp extends Component {
                         {this.displayAttibutes()}
                         {this.displayPrice()}
                         {this.displayBuyButton()}
-                        <div className='description-container'></div>
+                        <div className='description-container'>{ parse(this.state.product.description) }</div>
                     </div>
                 </div>)
         }
