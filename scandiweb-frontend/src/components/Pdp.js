@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import './Pdp.css';
+import { client, Query } from '@tilework/opus'
+
+const endpointUrl = 'http://localhost:4000/'
+client.setEndpoint(endpointUrl)
 
 class Pdp extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { mainImg: null }
+        this.state = {
+            mainImg: null,
+            pickedAttributes: []
+        }
 
         this.getMainPhotoUrl = this.getMainPhotoUrl.bind(this)
         this.addToCart = this.addToCart.bind(this)
@@ -17,14 +24,26 @@ class Pdp extends Component {
         this.getPickedProductData()
     }
 
-    getPickedProductData() {
-        const indexOfProduct = this.props.productsData.findIndex((product) => product.name === this.props.pickedProduct)
-        this.setState(this.props.productsData[indexOfProduct])
+    componentDidUpdate() {
+        this.displayDescription()
+    }
+
+    async getPickedProductData() {
+        const productQuery = new Query(`product(id:"${this.props.pickedProduct}"){id, name, inStock, gallery, description, category, attributes
+            {id, name, type, items{displayValue,value,id}}, prices{currency{label,symbol},amount},brand}`)
+        try {
+            const productsData = await client.post(productQuery)
+            this.setState(productsData)
+        } catch (error) {
+            console.log(`Unable to get data from server: ${error}`)
+        }
     }
 
     displayGalleryList() {
-        if (this.state.gallery) {
-            const gallery = this.state.gallery.map((photo) => <img key={photo} className='small-photo' src={photo} alt={`${this.state.name}`} onClick={this.getMainPhotoUrl}></img>)
+        if (this.state.product?.gallery) {
+            const gallery = this.state.product.gallery.map((photo) => {
+                return <img key={photo} className='small-photo' src={photo} alt={`${this.state.product.name}`} onClick={this.getMainPhotoUrl}></img>
+            })
             return gallery
         }
     }
@@ -35,11 +54,10 @@ class Pdp extends Component {
 
     displayMainPhoto() {
         if (!this.state.mainImg) {
-            const indexOfProduct = this.props.productsData.findIndex((product) => product.name === this.props.pickedProduct)
-            return <img className='main-image' src={this.props.productsData[indexOfProduct].gallery[0]} alt={this.state.name}></img>
+            return <img className='main-image' src={this.state.product.gallery[0]} alt={this.state.product.name}></img>
         }
         if (this.state.mainImg) {
-            return <img className='main-image' src={this.state.mainImg} alt={this.state.name}></img>
+            return <img className='main-image' src={this.state.mainImg} alt={this.state.product.name}></img>
         }
     }
 
@@ -87,8 +105,8 @@ class Pdp extends Component {
     }
 
     displayAttibutes() {
-        if (this.state.attributes) {
-            const attributesToDisplay = this.state.attributes.map((attribute) => {
+        if (this.state.product?.attributes) {
+            const attributesToDisplay = this.state.product.attributes.map((attribute) => {
                 return (
                     <div key={attribute.name} className='attribute-pack'>
                         <div key={attribute.name} className='attribute-name'>{attribute.name.toUpperCase()}:</div>
@@ -128,34 +146,34 @@ class Pdp extends Component {
     }
 
     displayPrice() {
-        if (this.state.prices) {
-            const indexOfProduct = this.state.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+        if (this.state.product?.prices) {
+            const indexOfProduct = this.state.product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
             return (
                 <div className='price-container'>
                     <div className='attribute-name'>PRICE:</div>
-                    <div className='price-value'>{this.state.prices[indexOfProduct].currency.symbol}{this.state.prices[indexOfProduct].amount.toFixed(2)}</div>
+                    <div className='price-value'>{this.state.product.prices[indexOfProduct].currency.symbol}{this.state.product.prices[indexOfProduct].amount.toFixed(2)}</div>
                 </div>
             )
         }
     }
 
     displayDescription() {
-        if (this.state.description) {
+        if (this.state.product?.description) {
             const container = document.querySelector('.description-container')
-            container.innerHTML = this.state.description
+            container.innerHTML = this.state.product.description
         }
     }
 
     addToCart() {
         if (this.state.pickedAttributes) {
-            if (this.state.attributes.length === this.state.pickedAttributes.length) {
-                this.props.addToCart(this.state.id, this.state.pickedAttributes)
+            if (this.state.product.attributes.length === this.state.pickedAttributes.length) {
+                this.props.addToCart(this.state.product.id, this.state.pickedAttributes)
             }
         }
     }
 
     displayBuyButton() {
-        if (this.state.inStock) {
+        if (this.state.product?.inStock) {
             return (<button className='buy-button' onClick={this.addToCart}>ADD TO CART</button>)
         } else {
             return (<button className='buy-button out-of-stock'>OUT OF STOCK</button>)
@@ -163,13 +181,13 @@ class Pdp extends Component {
     }
 
     displayOutOfStock() {
-        if (!this.state.inStock) {
+        if (!this.state.product?.inStock) {
             return <div className='pdp-out-of-stock'>OUT OF STOCK</div>
         }
     }
 
     addClassName() {
-        if (!this.state.inStock) {
+        if (!this.state.product?.inStock) {
             return 'pdp-container out-of-stock'
         } else {
             return 'pdp-container'
@@ -177,19 +195,19 @@ class Pdp extends Component {
     }
 
     render() {
-        if (this.state !== null) {
+        if (this.state.product) {
             return (
                 <div className={this.addClassName()}>
                     {this.displayOutOfStock()}
                     <div className="small-images">{this.displayGalleryList()}</div>
                     <div className='main-image-container'>{this.displayMainPhoto()}</div>
                     <div className='details'>
-                        <h2 className='product-title'>{this.state.name}</h2>
-                        <h3 className='product-brand'>{this.state.brand}</h3>
+                        <h2 className='product-title'>{this.state.product.name}</h2>
+                        <h3 className='product-brand'>{this.state.product.brand}</h3>
                         {this.displayAttibutes()}
                         {this.displayPrice()}
                         {this.displayBuyButton()}
-                        <div className='description-container'>{this.displayDescription()}</div>
+                        <div className='description-container'></div>
                     </div>
                 </div>)
         }

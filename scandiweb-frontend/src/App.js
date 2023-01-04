@@ -111,7 +111,7 @@ class App extends Component {
 
   displayPDP() {
     if (this.state.isDetailCardActive === true) {
-      return <Pdp productsData={this.state.productsData} pickedProduct={this.state.pickedProduct} pickedCurrency={this.state.pickedCurrency} addToCart={this.addToCart} />
+      return <Pdp pickedProduct={this.state.pickedProduct} pickedCurrency={this.state.pickedCurrency} addToCart={this.addToCart} />
     }
   }
 

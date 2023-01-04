@@ -23,7 +23,7 @@ class Products extends Component {
     }
 
     pickProductDetails(e) {
-        const name = e.target.getAttribute('productid')
+        const name = e.target.getAttribute('productname')
         this.props.changeProduct(name)
         this.props.hideProducts(true)
         window.scrollTo(0, 0);
