@@ -162,6 +162,12 @@ class Pdp extends Component {
         }
     }
 
+    displayOutOfStock() {
+        if (!this.state.inStock) {
+            return <div className='pdp-out-of-stock'>OUT OF STOCK</div>
+        }
+    }
+
     addClassName() {
         if (!this.state.inStock) {
             return 'pdp-container out-of-stock'
@@ -174,7 +180,7 @@ class Pdp extends Component {
         if (this.state !== null) {
             return (
                 <div className={this.addClassName()}>
-                    <div className='pdp-out-of-stock'>OUT OF STOCK</div>
+                    {this.displayOutOfStock()}
                     <div className="small-images">{this.displayGalleryList()}</div>
                     <div className='main-image-container'>{this.displayMainPhoto()}</div>
                     <div className='details'>
