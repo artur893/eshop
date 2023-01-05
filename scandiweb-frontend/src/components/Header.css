@@ -143,6 +143,7 @@ header {
 }
 
 .cart-details-color-pick {
+    border: solid 1px black;
     pointer-events: none;
     height: 18px;
     width: 18px;

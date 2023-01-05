@@ -53,20 +53,20 @@ class ProductCard extends Component {
     }
 
     displayName(product) {
-        return <div key={uuid()} className='bagview-name'>{product.name}</div>
+        return <div key={uuid()} className='bagview-name'>{product.product.name}</div>
     }
 
     displayBrand(product) {
-        return <div key={uuid()} className='bagview-brand'>{product.brand}</div>
+        return <div key={uuid()} className='bagview-brand'>{product.product.brand}</div>
     }
 
     displayPrice(product) {
-        const indexOfPrice = product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
-        return <div key={uuid()} className='bagview-price'>{product.prices[indexOfPrice].currency.symbol}{product.prices[indexOfPrice].amount.toFixed(2)}</div>
+        const indexOfPrice = product.product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+        return <div key={uuid()} className='bagview-price'>{product.product.prices[indexOfPrice].currency.symbol}{product.product.prices[indexOfPrice].amount.toFixed(2)}</div>
     }
 
     displayAttributes(product, index) {
-        const attributesToDisplay = product.attributes.map((attribute) => {
+        const attributesToDisplay = product.product.attributes.map((attribute) => {
             return (
                 <div key={attribute.name} className='bagview-attribute-pack'>
                     <div key={attribute.name} className='bagview-attribute-name'>{attribute.name}:</div>
@@ -128,7 +128,7 @@ class ProductCard extends Component {
     }
 
     displayArrows(product, index) {
-        if (product.gallery.length > 1) {
+        if (product.product.gallery.length > 1) {
             return (
                 <>
                     <div className='bagview-arrow' id='left-arrow' index={index} onClick={() => this.previousPhoto(index)}>{'<'}</div>
@@ -149,7 +149,7 @@ class ProductCard extends Component {
         } else {
             <div className='bagview-photo'>
                 {this.displayArrows(product, index)}
-                <img src={product.gallery[0]} alt={product.name}></img>
+                <img src={product.product.gallery[0]} alt={product.name}></img>
             </div>
         }
 
@@ -158,7 +158,7 @@ class ProductCard extends Component {
     loadImages(product, index) {
         const gallery = []
         if (this.state.products && this.props.cart) {
-            this.props.cart[index].gallery.forEach((photo) => {
+            this.props.cart[index].product.gallery.forEach((photo) => {
                 const img = new Image(300)
                 img.src = photo
                 gallery.push(img)
@@ -174,7 +174,7 @@ class ProductCard extends Component {
                 products.push({
                     id: product.id,
                     pickedPhoto: 0,
-                    photosLimit: product.gallery.length - 1
+                    photosLimit: product.product.gallery.length - 1
                 })
             })
             this.setState({ products: products })
@@ -226,8 +226,8 @@ class Summary extends Component {
     displayTotalPrice() {
         let totalPrice = 0
         this.props.cart.forEach((product) => {
-            const indexOfPrice = product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
-            totalPrice = totalPrice + (product.prices[indexOfPrice].amount * product.quantity)
+            const indexOfPrice = product.product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+            totalPrice = totalPrice + (product.product.prices[indexOfPrice].amount * product.quantity)
         })
         return totalPrice.toFixed(2)
     }

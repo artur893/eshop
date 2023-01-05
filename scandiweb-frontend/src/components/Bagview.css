@@ -85,6 +85,7 @@
 }
 
 .bagview-color-pick {
+    border: solid 1px black;
     pointer-events: none;
     height: 34px;
     width: 34px;

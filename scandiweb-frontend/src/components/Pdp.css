@@ -137,6 +137,7 @@
 }
 
 .color-pick {
+    border: solid 1px black;
     width: 28px;
     height: 28px;
 }

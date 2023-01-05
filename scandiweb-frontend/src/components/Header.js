@@ -181,7 +181,6 @@ class Cart extends Component {
         if (JSON.stringify(this.state.cart) !== JSON.stringify(prevState.cart)) {
             this.props.sendCartData(this.state.cart)
         }
-        localStorage.clear('cart')
     }
 
     showCartDetails(e) {
@@ -195,7 +194,6 @@ class Cart extends Component {
 
     async addToCart() {
         const productRaw = await this.findProduct()
-        console.log(productRaw)
         const product = JSON.parse(JSON.stringify(productRaw))
         product['pickedAttributes'] = this.props.sendToCart.attributesToCart
         product['quantity'] = 1
@@ -324,9 +322,8 @@ class CartDetails extends Component {
     }
 
     displayPrice(product) {
-        console.log(product)
         const indexOfPrice = product.product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
-        return <div key={uuid()} className='cart-details-price'>{product.product.prices[indexOfPrice].currency.symbol}{product.product.prices[indexOfPrice].amount}</div>
+        return <div key={uuid()} className='cart-details-price'>{product.product.prices[indexOfPrice].currency.symbol}{product.product.prices[indexOfPrice].amount.toFixed(2)}</div>
     }
 
     displayAttributes(product, index) {
