@@ -3,11 +3,7 @@ import { Category, Products } from './components/Products'
 import { Pdp } from './components/Pdp'
 import React, { Component } from 'react';
 import './App.css';
-import { client, Query } from '@tilework/opus'
 import { Bagview } from './components/Bagview';
-
-const endpointUrl = 'http://localhost:4000/'
-client.setEndpoint(endpointUrl)
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +17,6 @@ class App extends Component {
       pickedProduct: null,
       isDetailCardActive: false,
       isBagViewActive: false,
-      productsData: null
     }
     this.changeCategory = this.changeCategory.bind(this)
     this.changeCurrency = this.changeCurrency.bind(this)
@@ -78,7 +73,7 @@ class App extends Component {
   }
 
   displayHeader() {
-    return <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} productsData={this.state.productsData}
+    return <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency}
       changeCategory={this.changeCategory} changeCurrency={this.changeCurrency} setBagviewActive={this.setBagviewActive}
       hideProducts={this.setDetailCardActive} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} ref={this.header} />
   }

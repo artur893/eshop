@@ -478,12 +478,7 @@ class CartDetails extends Component {
 class Header extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            0: {
-                symbol: 'USD',
-                label: '$'
-            }
-        }
+        this.state = {}
         this.cartComponent = React.createRef();
         this.currencyComponent = React.createRef();
     }
