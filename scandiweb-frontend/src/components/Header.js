@@ -181,6 +181,7 @@ class Cart extends Component {
         if (JSON.stringify(this.state.cart) !== JSON.stringify(prevState.cart)) {
             this.props.sendCartData(this.state.cart)
         }
+        localStorage.clear('cart')
     }
 
     showCartDetails(e) {
@@ -192,8 +193,10 @@ class Cart extends Component {
         this.setState({ isDropped: false })
     }
 
-    addToCart() {
-        const product = this.findProduct()
+    async addToCart() {
+        const productRaw = await this.findProduct()
+        console.log(productRaw)
+        const product = JSON.parse(JSON.stringify(productRaw))
         product['pickedAttributes'] = this.props.sendToCart.attributesToCart
         product['quantity'] = 1
         product['index'] = uuid()
@@ -216,9 +219,15 @@ class Cart extends Component {
         }
     }
 
-    findProduct() {
-        const productToCart = JSON.parse(JSON.stringify(this.props.productsData.find(product => product.id === this.props.sendToCart.id)))
-        return productToCart
+    async findProduct() {
+        const productQuery = new Query(`product(id:"${this.props.pickedProduct}"){id, name, inStock, gallery, description, category, attributes
+            {id, name, type, items{displayValue,value,id}}, prices{currency{label,symbol},amount},brand}`)
+        try {
+            const productsData = await client.post(productQuery)
+            return productsData
+        } catch (error) {
+            console.log(`Unable to get data from server: ${error}`)
+        }
     }
 
     displayTotalQuantity() {
@@ -307,20 +316,21 @@ class CartDetails extends Component {
     }
 
     displayName(product) {
-        return <div key={uuid()} className='cart-details-name'>{product.name}</div>
+        return <div key={uuid()} className='cart-details-name'>{product.product.name}</div>
     }
 
     displayBrand(product) {
-        return <div key={uuid()} className='cart-details-brand'>{product.brand}</div>
+        return <div key={uuid()} className='cart-details-brand'>{product.product.brand}</div>
     }
 
     displayPrice(product) {
-        const indexOfPrice = product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
-        return <div key={uuid()} className='cart-details-price'>{product.prices[indexOfPrice].currency.symbol}{product.prices[indexOfPrice].amount}</div>
+        console.log(product)
+        const indexOfPrice = product.product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+        return <div key={uuid()} className='cart-details-price'>{product.product.prices[indexOfPrice].currency.symbol}{product.product.prices[indexOfPrice].amount}</div>
     }
 
     displayAttributes(product, index) {
-        const attributesToDisplay = product.attributes.map((attribute) => {
+        const attributesToDisplay = product.product.attributes.map((attribute) => {
             return (
                 <div key={attribute.name} className='cart-details-attribute-pack'>
                     <div key={attribute.name} className='cart-details-attribute-name'>{attribute.name}:</div>
@@ -355,7 +365,7 @@ class CartDetails extends Component {
 
     displayPhoto(product) {
         return (
-            <div className='cart-details-photo'><img src={product.gallery[0]} alt={product.name}></img></div>
+            <div className='cart-details-photo'><img src={product.product.gallery[0]} alt={product.name}></img></div>
         )
     }
 
@@ -446,10 +456,10 @@ class CartDetails extends Component {
 
     displaySummary() {
         if (this.props.cartDetails.length > 0) {
-            const indexOfPrice = this.props.cartDetails[0].prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
+            const indexOfPrice = this.props.cartDetails[0].product.prices.findIndex((price) => price.currency.symbol === this.props.pickedCurrency)
             let totalPrice = 0
             this.props.cartDetails.forEach((product) => {
-                totalPrice = totalPrice + (product.prices[indexOfPrice].amount * product.quantity)
+                totalPrice = totalPrice + (product.product.prices[indexOfPrice].amount * product.quantity)
             })
             return (
                 <div className='cart-details-summary'>
@@ -515,7 +525,7 @@ class Header extends Component {
                     <Currency pickedCurrency={this.props.pickedCurrency} ref={this.currencyComponent} closeCart={this.cartComponent.current} />
                     <Cart productsData={this.props.productsData} sendToCart={this.props.sendToCart} hideProducts={this.props.hideProducts} ref={this.cartComponent}
                         pickedCurrency={this.props.pickedCurrency} changeBagViewActive={this.props.setBagviewActive} sendCartData={this.props.sendCartData}
-                        closeCurrencies={this.currencyComponent.current} />
+                        closeCurrencies={this.currencyComponent.current} pickedProduct={this.props.pickedProduct} />
                     <DropdownMenu currencies={this.state} changeCurrency={this.props.changeCurrency} />
                 </div>
             </header>

@@ -73,7 +73,7 @@ class App extends Component {
   }
 
   displayHeader() {
-    return <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency}
+    return <Header pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} pickedProduct={this.state.pickedProduct}
       changeCategory={this.changeCategory} changeCurrency={this.changeCurrency} setBagviewActive={this.setBagviewActive}
       hideProducts={this.setDetailCardActive} sendToCart={this.state.productToCart} sendCartData={this.sendCartData} ref={this.header} />
   }
