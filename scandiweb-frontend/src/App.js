@@ -105,7 +105,7 @@ class App extends Component {
   displayProductsList() {
     if (this.state.isDetailCardActive === false && this.state.isBagViewActive === false) {
       return <Products pickedCategory={this.state.pickedCategory} pickedCurrency={this.state.pickedCurrency} addToCart={this.addToCart}
-        productsData={this.state.productsData} changeProduct={this.changeProduct} hideProducts={this.setDetailCardActive} />
+        changeProduct={this.changeProduct} hideProducts={this.setDetailCardActive} />
     }
   }
 

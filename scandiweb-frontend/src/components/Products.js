@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import './Products.css';
+import { client, Query } from '@tilework/opus'
+
+const endpointUrl = 'http://localhost:4000/'
+client.setEndpoint(endpointUrl)
 
 class Category extends Component {
 
@@ -20,6 +24,23 @@ class Products extends Component {
         }
 
         this.pickProductDetails = this.pickProductDetails.bind(this)
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props !== prevProps) {
+            this.getCategoryData(this.props.pickedCategory.toLowerCase())
+        }
+    }
+
+    async getCategoryData(category) {
+        const productQuery = new Query(`category(input:{title: "${category}"})
+        {products{id, name, category, inStock, brand, gallery, prices{currency{label, symbol}, amount}}}`)
+        try {
+            const productsData = await client.post(productQuery)
+            this.setState(productsData)
+        } catch (error) {
+            console.log(`Unable to get data from server: ${error}`)
+        }
     }
 
     pickProductDetails(e) {
@@ -62,37 +83,21 @@ class Products extends Component {
         </div>
     }
 
-    populateCards(category) {
-        if (this.props.productsData) {
-            const productCards = this.props.productsData.map((product) => {
-                if (category === 'ALL') {
-                    return (
-                        <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name}
-                            onClick={this.pickProductDetails} productid={product.name} productname={product.id}>
-                            {this.displayOutOfStock(product)}
-                            {this.displayProductImage(product)}
-                            {this.displayCartBuyCirlce()}
-                            <div className="product-info">
-                                {this.displayProductName(product)}
-                                {this.displayProductPrice(product)}
-                            </div>
+    populateCards() {
+        if (this.state.category) {
+            const productCards = this.state.category.products.map((product) => {
+                return (
+                    <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name}
+                        onClick={this.pickProductDetails} productid={product.name} productname={product.id}>
+                        {this.displayOutOfStock(product)}
+                        {this.displayProductImage(product)}
+                        {this.displayCartBuyCirlce()}
+                        <div className="product-info">
+                            {this.displayProductName(product)}
+                            {this.displayProductPrice(product)}
                         </div>
-                    )
-                }
-                if (product.category.toUpperCase() === category) {
-                    return (
-                        <div className="product-card" id={this.addOutOfStockClass(product)} key={product.name}
-                            onClick={this.pickProductDetails} productid={product.name} productname={product.id}>
-                            {this.displayOutOfStock(product)}
-                            {this.displayProductImage(product)}
-                            {this.displayCartBuyCirlce()}
-                            <div className="product-info">
-                                {this.displayProductName(product)}
-                                {this.displayProductPrice(product)}
-                            </div>
-                        </div>
-                    )
-                } else return []
+                    </div>
+                )
             })
             return productCards
         }
@@ -100,7 +105,7 @@ class Products extends Component {
     render() {
         return (
             <div className="products">
-                {this.populateCards(this.props.pickedCategory)}
+                {this.populateCards()}
             </div>
         )
     }
