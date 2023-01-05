@@ -18,32 +18,22 @@ class Menu extends Component {
         this.pickCategory = this.pickCategory.bind(this)
     }
 
-    categoryDataRaw
-    categoryValues
-    dataToDisplay
-
     async getCategoriesData() {
-        const categoryQuery = new Query('category{products{category}}')
+        const categoryQuery = new Query('categories{name}')
         try {
             const categoryData = await client.post(categoryQuery)
-            this.categoryDataRaw = categoryData.category.products
+            this.setState(categoryData)
         } catch (error) {
             console.log(`Unable to get data from server: ${error}`)
         }
     }
 
-    filterDuplicates(data) {
-        return data.filter((value, index) => data.indexOf(value) === index)
-    }
-
     displayCategories() {
-        this.dataToDisplay = this.categoryValues.map((x) => {
-            return <li key={x} className={'menu-element'} onClick={this.pickCategory}>{x.toUpperCase()}</li>
-        })
-    }
-
-    formatCategoryData() {
-        this.categoryValues = this.filterDuplicates(Object.values(this.categoryDataRaw).map((x) => x.category))
+        if (this.state.categories) {
+            return this.state.categories.map((x) => {
+                return <li key={x.name} className={'menu-element'} onClick={this.pickCategory}>{x.name.toUpperCase()}</li>
+            })
+        }
     }
 
     pickCategory(e) {
@@ -57,15 +47,12 @@ class Menu extends Component {
 
     async componentDidMount() {
         await this.getCategoriesData()
-        this.formatCategoryData()
-        this.displayCategories()
     }
 
     render() {
         return (
             <ul className='menu'>
-                <li key='allProducts' className={'menu-element'} onClick={this.pickCategory}>ALL</li>
-                {this.dataToDisplay}
+                {this.displayCategories()}
             </ul>
         )
     }

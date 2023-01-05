@@ -37,23 +37,10 @@ class App extends Component {
     if (currency) {
       this.setState({ pickedCurrency: currency })
     }
-    if (this.state.productsData === null) {
-      this.getProductsData()
-    }
   }
 
   componentDidUpdate() {
     localStorage.setItem('currency', this.state.pickedCurrency)
-  }
-
-  async getProductsData() {
-    const productsQuery = new Query('category{products{id, name, inStock, gallery, description, category, attributes{id,name,type,items{displayValue,value,id}}, prices{currency{label,symbol},amount}, brand}}')
-    try {
-      const productsData = await client.post(productsQuery)
-      this.setState({ productsData: productsData.category.products })
-    } catch (error) {
-      console.log(`Unable to get data from server: ${error}`)
-    }
   }
 
   changeCategory(newCategory) {
