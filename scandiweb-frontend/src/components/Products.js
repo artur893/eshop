@@ -26,6 +26,10 @@ class Products extends Component {
         this.pickProductDetails = this.pickProductDetails.bind(this)
     }
 
+    componentDidMount() {
+        this.getCategoryData(this.props.pickedCategory.toLowerCase())
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props !== prevProps) {
             this.getCategoryData(this.props.pickedCategory.toLowerCase())
